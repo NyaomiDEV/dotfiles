@@ -17,7 +17,7 @@ alias grep='grep --colour=auto'
 alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
 
-# if bat is present, alias cat to use bat -pp
+# If bat is present, alias cat to use bat -pp
 where bat >/dev/null && alias cat="bat -pp"
 
 # Load aliases and shortcuts if existent
@@ -135,6 +135,7 @@ HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 # Readapted to my use case
 local segments=()
 segments+='%(?..%F{red}[%?]%f )' # retcode if non-zero
+segments+='%F{yellow}%n ' # user name
 segments+='%F{green}%~ ' # folder
 segments+='$(git-prompt-info)' # git info
 segments+='%F{white}%(!.'$'\n''#.'$'\n'')%%%f ' # prompt symbol
