@@ -21,13 +21,28 @@ alias grep='grep --colour=auto'
 alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
 
+# if bat is present, alias cat to use bat -pp
+where bat >/dev/null && alias cat="bat -pp"
+
 # Enable command line editing in $EDITOR and bind to Ctrl+F, c keys
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '^Fc' edit-command-line
 
 # Prompt
-PS1="%{$fg[yellow]%}%n@%{$fg[magenta]%}%M%{$fg[green]%}%~%{$reset_color%}%% "
+setopt promptsubst
+#PS1="%{$fg[yellow]%}%n@%{$fg[magenta]%}%M%{$fg[green]%}%~%{$reset_color%}%% "
+git_prompt_info () {
+    local gitref=${$(git branch --show-current 2>/dev/null):-$(git rev-parse --short HEAD 2>/dev/null)}
+    print -rP -- "%F{blue}${gitref}%F{red}${$(git status --porcelain 2>/dev/null):+*}%f"
+}
+
+local segments=()
+segments+='%(?..%F{red}[%?]%f )' # retcode if non-zero
+segments+='%F{green}%~ ' # folder
+segments+='$(git_prompt_info)' # git info
+segments+='%F{white}%(!.'$'\n''#.'$'\n'')%%%f ' # prompt symbol
+PS1=${(j::)segments}
 
 # History
 HISTSIZE=10000
@@ -41,7 +56,7 @@ setopt share_history
 setopt extended_history
 setopt hist_reduce_blanks
 setopt hist_ignore_space
-setopt hist_ignore_all_dups
+#setopt hist_ignore_all_dups
 export HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
 # Allow comments
@@ -154,6 +169,9 @@ bindkey "^s" history-incremental-search-forward
 #
 setopt AUTO_PUSHD
 
+# Directory stack size
+DIRSTACKSIZE=10
+
 # Widgets for changing current working directory.
 function redraw-prompt() {
 	emulate -L zsh
@@ -208,8 +226,8 @@ bindkey '^[[B' history-substring-search-down
 
 # Highlight colors
 typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[command]="fg=white"
-ZSH_HIGHLIGHT_STYLES[default]="fg=#e0e0e0"
+ZSH_HIGHLIGHT_STYLES[command]="fg=white,bold"
+ZSH_HIGHLIGHT_STYLES[default]="fg=white"
 ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=orange"
 ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=orange"
 ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]="fg=orange"
@@ -217,11 +235,11 @@ ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=orange"
 ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=cyan"
 ZSH_HIGHLIGHT_STYLES[redirection]="fg=blue"
 ZSH_HIGHLIGHT_STYLES[comment]="fg=grey"
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]="fg=#ff0000"
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument-unclosed]="fg=#ff0000"
-ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument-unclosed]="fg=#ff0000"
-ZSH_HIGHLIGHT_STYLES[back-quoted-argument-unclosed]="fg=#ff0000"
-ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=#ff0000"
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]="fg=red"
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument-unclosed]="fg=red"
+ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument-unclosed]="fg=red"
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument-unclosed]="fg=red"
+ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=red"
 
 # History substring colors
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold'
