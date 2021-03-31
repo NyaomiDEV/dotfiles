@@ -7,7 +7,6 @@ Currently only featuring `.zshrc`
 The scope of it was to be as close as possible to the `fish` shell experience.
 
 Right now it is close but not completely. Currently missing things are:
- - Alt+Left / Alt+Right (Navigate between cwd history)
  - Collapsible prompt (I want to change the PS1 entirely anyway)
  - Better command history handling, with per-directory history and autosuggestions
 

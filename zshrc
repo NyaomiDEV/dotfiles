@@ -147,6 +147,57 @@ bindkey "${terminfo[knp]}" end-of-history       # PgDn
 bindkey "^r" history-incremental-search-backward
 bindkey "^s" history-incremental-search-forward
 
+#
+# Fish-like directory traversing
+# https://github.com/romkatv/powerlevel10k/issues/663
+# BEGIN
+#
+setopt AUTO_PUSHD
+
+# Widgets for changing current working directory.
+function redraw-prompt() {
+	emulate -L zsh
+	local f
+	for f in chpwd $chpwd_functions precmd $precmd_functions; do
+		(( $+functions[$f] )) && $f &>/dev/null
+	done
+	zle .reset-prompt
+	zle -R
+}
+
+function cd-rotate() {
+	emulate -L zsh
+	while (( $#dirstack )) && ! pushd -q $1 &>/dev/null; do
+		popd -q $1
+	done
+	if (( $#dirstack )); then
+		redraw-prompt
+	fi
+}
+
+function cd-back() { cd-rotate +1 }
+function cd-forward() { cd-rotate -0 }
+
+zle -N cd-back
+zle -N cd-forward
+
+bindkey '^[[1;3D' cd-back     # alt+left   cd into the prev directory
+bindkey '^[[1;3C' cd-forward  # alt+right  cd into the next directory
+#
+# END
+#
+
+# Go up, from Andy Kluger (@andykluger) at telegram group @zshell
+cd-go-up () {
+  emulate -L zsh
+  cd ..
+  redraw-prompt
+}
+
+zle -N cd-go-up
+
+bindkey '^[[1;3A' cd-go-up  # alt+up;  cd into the parent directory
+
 # Load syntax highlighting and substring search as last (not really but this works)
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
