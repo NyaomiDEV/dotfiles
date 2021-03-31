@@ -25,7 +25,7 @@ where bat >/dev/null && alias cat="bat -pp"
 [ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
 
 #
-# Autoloads
+# Modules and functions loading
 #
 
 # Colors
@@ -33,6 +33,7 @@ autoload -U colors
 
 # Completion
 autoload -U compinit
+zmodload zsh/complist
 
 # Edit command line
 autoload -U edit-command-line
@@ -219,36 +220,39 @@ source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring
 # Keybinds
 #
 
+# Character deletion (for funky terminals)
+#bindkey "^?" backward-delete-char							# Backspace
+bindkey "${terminfo[kdch1]}" delete-char					# Delete
+
 # Commandline editing
-bindkey '^Fc' edit-command-line # Ctrl+F, c
-
-# Line navigation
-bindkey '^[[H' beginning-of-line # Home
-bindkey '^[[F' end-of-line # End
-bindkey "^[[1;5C" forward-word # Ctrl+Right
-bindkey "^[[1;5D" backward-word # Ctrl+Left
-
-# Character deletion
-bindkey "^?" backward-delete-char
-bindkey "${terminfo[kdch1]}" delete-char # Delete
-
-# Overwrite mode
-bindkey "${terminfo[kich1]}" overwrite-mode # Insert
-
-# History navigation
-bindkey "${terminfo[kpp]}" beginning-of-history # PgUp
-bindkey "${terminfo[knp]}" end-of-history       # PgDn
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
-# Incremental search
-bindkey "^r" history-incremental-search-backward
-bindkey "^s" history-incremental-search-forward
+bindkey '^E' edit-command-line								# Ctrl+E
 
 # Directory traversing
-bindkey '^[[1;3D' cd-back     # Alt+Left
-bindkey '^[[1;3C' cd-forward  # Alt+Right
-bindkey '^[[1;3A' cd-up       # Alt+Up
+bindkey '^[[1;3D' cd-back									# Alt+Left
+bindkey '^[[1;3C' cd-forward								# Alt+Right
+bindkey '^[[1;3A' cd-up										# Alt+Up
+
+# History navigation
+bindkey "${terminfo[kpp]}" beginning-of-history				# PgUp
+bindkey "${terminfo[knp]}" end-of-history					# PgDn
+bindkey '^[[A' history-substring-search-up					# Up
+bindkey '^[[B' history-substring-search-down				# Down
+
+# Incremental search
+bindkey "^R" history-incremental-search-backward			# Ctrl+R
+bindkey "^S" history-incremental-search-forward				# Ctrl+S
+
+# Line navigation
+bindkey '^[[H' beginning-of-line							# Home
+bindkey '^[[F' end-of-line									# End
+bindkey "^[[1;5C" forward-word								# Ctrl+Right
+bindkey "^[[1;5D" backward-word								# Ctrl+Left
+
+# Menu selection
+bindkey -M menuselect '^@' accept-and-infer-next-history	# Ctrl+Space
+
+# Overwrite mode
+bindkey "${terminfo[kich1]}" overwrite-mode					# Insert
 
 #
 # Completion setup
@@ -294,7 +298,7 @@ zstyle ':completion:*' special-dirs true
 # Status line
 zstyle ':completion:*:default' select-prompt $'\e[01;35m -- %M    %P -- \e[00;00m'
 
-zmodload zsh/complist
+# Initialize completion
 compinit -d "$HOME/.cache/zsh/compdump"
 
 # Use cod (completion daemon) if it is available in the system
