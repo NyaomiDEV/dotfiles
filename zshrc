@@ -132,24 +132,79 @@ HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 # Prompt
 # If you want a barebones classic prompt style, uncomment the following line and comment everything else
 # PS1="%{$fg[yellow]%}%n@%{$fg[magenta]%}%M%{$fg[green]%}%~%{$reset_color%}%% "
+
 # Source: Andy Kluger (@andykluger) from telegram group @zshell
 # Readapted to my use case
 local segments=()
-segments+='%(?..%F{red}[%?]%f )' # retcode if non-zero
-segments+='%F{yellow}%n ' # user name
-segments+='%F{green}%~ ' # folder
-segments+='$(git-prompt-info)' # git info
-segments+='%F{white}%(!.'$'\n''#.'$'\n'')%%%f ' # prompt symbol
+
+segments+='%(?..%F{red}[%?]%f )'				# retcode if non-zero
+segments+='%F{yellow}%n '						# user name
+segments+='%F{green}%~ '						# folder
+segments+='$(git-status)'						# git info
+segments+='%F{white}%(!.'$'\n''#.'$'\n'')%%%f '	# prompt symbol
+
 PS1=${(j::)segments}
 
 #
 # Functions
 #
 
+# UNUSED: Could be removed
 # Source: Andy Kluger (@andykluger) from telegram group @zshell
 function git-prompt-info () {
     local gitref=${$(git branch --show-current 2>/dev/null):-$(git rev-parse --short HEAD 2>/dev/null)}
     print -rP -- "%F{blue}${gitref}%F{red}${$(git status --porcelain 2>/dev/null):+*}%f"
+}
+
+# Source: https://github.com/agkozak/agkozak-zsh-prompt/
+function git-status () {
+	emulate -L zsh
+
+	local ref branch
+	ref=$(command git symbolic-ref --quiet HEAD 2> /dev/null)
+	case $? in			# See what the exit code is.
+		0) ;;			# $ref contains the name of a checked-out branch.
+		128) return ;;	# No Git repository here.
+		# Otherwise, see if HEAD is in detached state.
+		*) ref=$(command git rev-parse --short HEAD 2> /dev/null) || return ;;
+	esac
+	branch=${ref#refs/heads/}
+
+	if [[ -n $branch ]]; then
+		local git_status symbols i=1 k
+
+		git_status="$(LC_ALL=C GIT_OPTIONAL_LOCKS=0 command git status --show-stash 2>&1)"
+
+		typeset -A messages
+		messages=(
+			'&*'	' have diverged,'
+			'&'		'Your branch is behind '
+			'*'		'Your branch is ahead of '
+			'+'		'new file:   '
+			'x'		'deleted:    '
+			'!'		'modified:   '
+			'>'		'renamed:    '
+			'?'		'Untracked files:'
+		)
+
+		for k in '&*' '&' '*' '+' 'x' '!' '>' '?'; do
+			case $git_status in
+				*${messages[$k]}*) symbols+="$k" ;;
+			esac
+			(( i++ ))
+		done
+
+		# Check for stashed changes. If there are any, add the stash symbol to the
+		# list of symbols.
+		case $git_status in
+			*'Your stash currently has '*)
+				symbols+="$"
+				;;
+		esac
+
+		[[ -n $symbols ]] && symbols=" %F{red}${symbols}"
+		printf -- '%s%s%s' "%F{blue}" "$branch" "$symbols"
+	fi
 }
 
 # Source: https://github.com/romkatv/powerlevel10k/issues/663
