@@ -18,7 +18,7 @@ alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
 
 # If bat is present, alias cat to use bat -pp
-where bat >/dev/null && alias cat="bat -pp"
+where bat >/dev/null && alias cat="bat -pp" || true
 
 # Load aliases and shortcuts if existent
 [ -f "$HOME/.config/shortcutrc" ] && source "$HOME/.config/shortcutrc"
@@ -357,4 +357,4 @@ zstyle ':completion:*:default' select-prompt $'\e[01;35m -- %M    %P -- \e[00;00
 compinit -d "$HOME/.cache/zsh/compdump"
 
 # Use cod (completion daemon) if it is available in the system
-where cod >/dev/null && source <(cod init $$ zsh)
+where cod >/dev/null && source <(cod init $$ zsh) || true
