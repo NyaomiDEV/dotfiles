@@ -1,0 +1,8 @@
+#!/bin/sh
+
+wal $@
+
+which wal_steam && wal_steam || true
+which wal-discord && wal-discord || true
+#which pywal-discord && pywal-discord > $HOME/.config/discocss/custom.css || true
+[ -f $HOME/.telegram-palette-gen/telegram-palette-gen ] && $HOME/.telegram-palette-gen/telegram-palette-gen --wal || true

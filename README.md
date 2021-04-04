@@ -1,6 +1,6 @@
 # Naomi's Dotfiles
 
-Currently only featuring `.zshrc`
+I will be documenting the only relevant bits of my dotfiles in the README.
 
 # `.zshrc`
 

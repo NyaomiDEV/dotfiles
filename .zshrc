@@ -96,6 +96,9 @@ setopt correct
 # Directory stack
 setopt auto_pushd
 
+# Disowning - auto continue
+setopt auto_continue
+
 # History
 setopt append_history
 setopt inc_append_history
@@ -137,11 +140,11 @@ HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 # Readapted to my use case
 local segments=()
 
-segments+='%(?..%F{red}[%?]%f )'				# retcode if non-zero
-segments+='%F{yellow}%n '						# user name
-segments+='%F{green}%~ '						# folder
-segments+='$(git-status)'						# git info
-segments+='%F{white}%(!.'$'\n''#.'$'\n'')%%%f '	# prompt symbol
+segments+='%F{yellow}%n '					# user name
+segments+='%F{green}%~ '					# folder
+segments+='$(git-status) '					# git info
+segments+='%(?..%F{red}%?%f) '			# retcode if non-zero
+segments+='%F{white}'$'\n''%#%f '			# prompt symbol
 
 PS1=${(j::)segments}
 
@@ -202,7 +205,7 @@ function git-status () {
 				;;
 		esac
 
-		[[ -n $symbols ]] && symbols=" %F{red}${symbols}"
+		[[ -n $symbols ]] && symbols=" %F{magenta}${symbols}"
 		printf -- '%s%s%s' "%F{blue}" "$branch" "$symbols"
 	fi
 }
