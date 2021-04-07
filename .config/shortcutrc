@@ -1,3 +1,12 @@
 alias zshrc="$EDITOR ~/.zshrc" 
 alias shortcutrc="$EDITOR ~/.config/shortcutrc" 
 alias aliasrc="$EDITOR ~/.config/aliasrc" 
+
+function dotupdate() {
+	local curdir=$(pwd)
+	cd $HOME/Sorgenti/dotfiles
+	git add .
+	git commit -m "Update dotfiles"
+	git push
+	cd $curdir
+}

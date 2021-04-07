@@ -58,19 +58,68 @@ fi
 
 # Highlight colors
 typeset -A ZSH_HIGHLIGHT_STYLES
+
+ZSH_HIGHLIGHT_STYLES[default]="none"
+
+ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=yellow,bold"
+
+ZSH_HIGHLIGHT_STYLES[precommand]="fg=white,bold"
 ZSH_HIGHLIGHT_STYLES[command]="fg=white,bold"
-ZSH_HIGHLIGHT_STYLES[default]="fg=white"
+ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=cyan"
+
+ZSH_HIGHLIGHT_STYLES[alias]="fg=green,bold"
+ZSH_HIGHLIGHT_STYLES[suffix-alias]="fg=green"
+ZSH_HIGHLIGHT_STYLES[global-alias]="fg=green,bold"
+
+ZSH_HIGHLIGHT_STYLES[builtin]="fg=blue,bold"
+
+ZSH_HIGHLIGHT_STYLES[function]="fg=magenta,bold"
+
+ZSH_HIGHLIGHT_STYLES[redirection]="fg=blue"
+
+ZSH_HIGHLIGHT_STYLES[comment]="fg=black"
+
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="none"
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="none"
+
 ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=orange"
 ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=orange"
 ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]="fg=orange"
 ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=orange"
-ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=cyan"
-ZSH_HIGHLIGHT_STYLES[redirection]="fg=blue"
-ZSH_HIGHLIGHT_STYLES[comment]="fg=grey"
+
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument-delimiter]="fg=magenta"
+
+ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]="fg=orange"
+ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]="fg=orange"
+ZSH_HIGHLIGHT_STYLES[back-dollar-quoted-argument]="fg=orange"
+
 ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]="fg=red"
 ZSH_HIGHLIGHT_STYLES[double-quoted-argument-unclosed]="fg=red"
 ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument-unclosed]="fg=red"
 ZSH_HIGHLIGHT_STYLES[back-quoted-argument-unclosed]="fg=red"
+
+ZSH_HIGHLIGHT_STYLES[path]="underline"
+#ZSH_HIGHLIGHT_STYLES[path_pathseparator]=""
+#ZSH_HIGHLIGHT_STYLES[path_prefix_pathseparator]=""
+
+ZSH_HIGHLIGHT_STYLES[autodirectory]="fg=green,underline"
+
+ZSH_HIGHLIGHT_STYLES[globbing]="fg=blue"
+ZSH_HIGHLIGHT_STYLES[history-expansion]="fg=blue"
+
+ZSH_HIGHLIGHT_STYLES[command-substitution]="none"
+ZSH_HIGHLIGHT_STYLES[command-substitution-delimiter]="fg=magenta"
+
+ZSH_HIGHLIGHT_STYLES[process-substitution]="none"
+ZSH_HIGHLIGHT_STYLES[process-substitution-delimiter]="fg=magenta"
+
+ZSH_HIGHLIGHT_STYLES[rc-quote]="fg=cyan"
+
+ZSH_HIGHLIGHT_STYLES[assign]="none"
+ZSH_HIGHLIGHT_STYLES[named-fd]="none"
+ZSH_HIGHLIGHT_STYLES[numeric-fd]="none"
+ZSH_HIGHLIGHT_STYLES[arg0]="fg=green"
+
 ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=red"
 
 # History substring colors
@@ -141,9 +190,9 @@ HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 local segments=()
 
 segments+='%F{yellow}%n '					# user name
-segments+='%F{green}%~ '					# folder
-segments+='$(git-status) '					# git info
-segments+='%(?..%F{red}%?%f) '			# retcode if non-zero
+segments+='%F{green}%~'						# folder
+segments+='$(git-status)'					# git info
+segments+='%(?.. %F{red}%?%f)'				# retcode if non-zero
 segments+='%F{white}'$'\n''%#%f '			# prompt symbol
 
 PS1=${(j::)segments}
@@ -205,8 +254,9 @@ function git-status () {
 				;;
 		esac
 
+		[[ -n $branch ]] && branch=" %F{blue}${branch}"
 		[[ -n $symbols ]] && symbols=" %F{magenta}${symbols}"
-		printf -- '%s%s%s' "%F{blue}" "$branch" "$symbols"
+		printf -- '%s%s' "$branch" "$symbols"
 	fi
 }
 
