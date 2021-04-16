@@ -1,0 +1,4 @@
+KEY_F1="qdbus org.kde.KWin /KWin org.kde.KWin.setCurrentDesktop 1"
+KEY_F2="qdbus org.kde.KWin /KWin org.kde.KWin.setCurrentDesktop 2"
+KEY_F3="qdbus org.kde.KWin /KWin org.kde.KWin.setCurrentDesktop 3"
+KEY_F4="qdbus org.kde.KWin /KWin org.kde.KWin.setCurrentDesktop 4"
