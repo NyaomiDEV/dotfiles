@@ -11,7 +11,6 @@ async def listen(dev, macros):
 			if event.type == ecodes.EV_KEY:
 				key = categorize(event)
 				if key.keystate == key.key_down:
-					print(key.keycode)
 					if key.keycode in macros:
 						os.system(macros[key.keycode])
 
