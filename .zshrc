@@ -318,8 +318,13 @@ zle -N cd-forward
 # Autosuggestions
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
+# Fzf tab completion
+source /usr/share/fzf/completion.zsh
+source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh
+
 # Syntax highlighting
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # History substring search
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
@@ -386,16 +391,28 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} ma=${SELECTED_ITEM_MENULIS
 # Comments
 zstyle ':completion:*' verbose yes
 
+# Content preview (fzf-tab)
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+
 # Fault tolerance (1 error on 3 characters)
 zstyle ':completion:*' completer _complete _correct _approximate
 zstyle -e ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
+
+# Fzf based completion (zsh-autocomplete)
+#zstyle ':autocomplete:tab:*' fzf-completion yes
+
+# Git checkout sorting
+zstyle ':completion:*:git-checkout:*' sort false
 
 # Grouping
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*:messages' format $'\e[01;35m -- %d -- \e[00;00m'
 zstyle ':completion:*:warnings' format $'\e[01;31mNo matches found\e[00;00m'
-zstyle ':completion:*:descriptions' format $'\e[01;33m -- %d -- \e[00;00m'
+zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*:corrections' format $'\e[01;33m -- %d -- \e[00;00m'
+
+# Group switching (fzf-tab)
+zstyle ':fzf-tab:*' switch-group ',' '.'
 
 # Menu selection
 zstyle ':completion:*' menu select=1
@@ -405,6 +422,9 @@ zstyle ':completion:*' special-dirs true
 
 # Status line
 zstyle ':completion:*:default' select-prompt $'\e[01;35m -- %M    %P -- \e[00;00m'
+
+# Tab key behaviour
+zstyle ':autocomplete:tab:*' widget-style menu-complete
 
 # Initialize completion
 compinit -d "$HOME/.cache/zsh/compdump"
