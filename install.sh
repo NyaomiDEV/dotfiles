@@ -13,8 +13,20 @@ files=$(find $BASEDIR -type f -not -path "$BASEDIR/.git/*" -not -path "$BASEDIR/
 
 for file in $files; do
 	relative=$(realpath --relative-to="$BASEDIR" $file)
+	
+	while
+		echo -n "[?] Do you want to install $relative ? [Y/n]: "
+		read answer
+		if [ "$answer" = "n" ] || [ "$answer" = "N" ]; then
+			echo "[-] Skipping $relative"
+			continue 2
+		fi
+		[ -n "$answer" ] && [ "$answer" != "y" ] && [ "$answer" != "Y" ]
+	do :; done
+	
 	echo "[+] Setting up $relative"
-	if ([ -f "$HOME/$relative" ] && [ ! -L "$HOME/$relative" ]) || [ "$(realpath "$HOME/$relative")" != "$file" ]; then
+	mkdir -p $(dirname "$HOME/$relative") 2>/dev/null
+	if ([ -f "$HOME/$relative" ] && [ ! -L "$HOME/$relative" ]) || ([ -e "$HOME/$relative" ] && [ "$(realpath "$HOME/$relative")" != "$file" ]); then
 		echo "[-] Backing up your $relative to $relative.old"
 		mv "$HOME/$relative" "$HOME/$relative.old"
 	fi
