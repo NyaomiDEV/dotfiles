@@ -7,10 +7,10 @@ which wal-discord && wal-discord || true
 #which pywal-discord && pywal-discord > $HOME/.config/discocss/custom.css || true
 [ -f $HOME/.telegram-palette-gen/telegram-palette-gen ] && $HOME/.telegram-palette-gen/telegram-palette-gen --wal || true
 
-for session in $(qdbus org.kde.yakuake 2>/dev/null | grep /Sessions/ || true); do
-	qdbus org.kde.yakuake $session org.kde.konsole.Session.setProfile Yakuake
-done
+#for session in $(qdbus org.kde.yakuake 2>/dev/null | grep /Sessions/ || true); do
+#	qdbus org.kde.yakuake $session org.kde.konsole.Session.setProfile Yakuake
+#done
 
-for session in $(qdbus org.kde.konsole 2>/dev/null | grep /Sessions/ || true); do
-	qdbus org.kde.konsole $session org.kde.konsole.Session.setProfile Konsole
-done
+#for session in $(qdbus org.kde.konsole 2>/dev/null | grep /Sessions/ || true); do
+#	qdbus org.kde.konsole $session org.kde.konsole.Session.setProfile Konsole
+#done
