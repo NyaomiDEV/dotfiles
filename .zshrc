@@ -198,6 +198,7 @@ local segments=()
 segments+='%F{yellow}%n '					# user name
 segments+='%F{green}%~'						# folder
 segments+='$(git-status)'					# git info
+segments+='$(nvm-version)'					# nvm version
 segments+='%(?.. %F{red}%?%f)'				# retcode if non-zero
 segments+='%F{white}'$'\n''%#%f '			# prompt symbol
 
@@ -264,6 +265,16 @@ function git-status () {
 		[[ -n $symbols ]] && symbols=" %F{magenta}${symbols}"
 		printf -- '%s%s' "$branch" "$symbols"
 	fi
+}
+
+function nvm-version() {
+	emulate -L zsh
+	[ ! -f "/usr/share/nvm/init-nvm.sh" ] && return
+	local nvmver
+	nvmver=$(nvm version)
+	[ "$nvmver" = "system" ] && return
+	nvmver=" %F{green}node-${nvmver}"
+	printf -- '%s' "$nvmver"
 }
 
 # Source: https://github.com/romkatv/powerlevel10k/issues/663
@@ -336,6 +347,9 @@ source /usr/share/fzf/key-bindings.zsh
 
 # History substring search
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+
+# Node Version Manager
+[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh || true
 
 #
 # Keybinds
