@@ -187,6 +187,9 @@ SAVEHIST=10000
 HISTFILE=~/.cache/zsh/history
 HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
+# Nerd Fonts
+NERD_FONTS=1
+
 # Prompt
 # If you want a barebones classic prompt style, uncomment the following line and comment everything else
 # PS1="%{$fg[yellow]%}%n@%{$fg[magenta]%}%M%{$fg[green]%}%~%{$reset_color%}%% "
@@ -208,13 +211,6 @@ PS1=${(j::)segments}
 # Functions
 #
 
-# UNUSED: Could be removed
-# Source: Andy Kluger (@andykluger) from telegram group @zshell
-function git-prompt-info () {
-    local gitref=${$(git branch --show-current 2>/dev/null):-$(git rev-parse --short HEAD 2>/dev/null)}
-    print -rP -- "%F{blue}${gitref}%F{red}${$(git status --porcelain 2>/dev/null):+*}%f"
-}
-
 # Source: https://github.com/agkozak/agkozak-zsh-prompt/
 function git-status () {
 	emulate -L zsh
@@ -229,7 +225,7 @@ function git-status () {
 	esac
 	branch=${ref#refs/heads/}
 
-	if [[ -n $branch ]]; then
+	if [ -n "$branch" ]; then
 		local git_status symbols i=1 k
 
 		git_status="$(LC_ALL=C GIT_OPTIONAL_LOCKS=0 command git status --show-stash 2>&1)"
@@ -261,8 +257,13 @@ function git-status () {
 				;;
 		esac
 
-		[[ -n $branch ]] && branch=" %F{blue}${branch}"
-		[[ -n $symbols ]] && symbols=" %F{magenta}${symbols}"
+		if [ -n "$branch" ]; then
+			[ $NERD_FONTS -eq 1 ] &&
+				branch=' %F{blue}'$'\ue725'" ${branch}" ||
+				branch=" %F{blue}${branch}"
+		fi
+
+		[ -n "$symbols" ] && symbols=" %F{magenta}${symbols}"
 		printf -- '%s%s' "$branch" "$symbols"
 	fi
 }
@@ -273,7 +274,9 @@ function nvm-version() {
 	local nvmver
 	nvmver=$(nvm version)
 	[ "$nvmver" = "system" ] && return
-	nvmver=" %F{green}node-${nvmver}"
+	[ $NERD_FONTS -eq 1 ] &&
+		nvmver=' %F{green}'$'\ue718'" ${nvmver:1}" ||
+		nvmver=" %F{green}node-${nvmver:1}"
 	printf -- '%s' "$nvmver"
 }
 
