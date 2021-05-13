@@ -339,8 +339,8 @@ zle -N cd-forward
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Fzf (tab completion / key bindings)
-source /usr/share/fzf/completion.zsh
-source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh 2>/dev/null || true
+source /usr/share/fzf/key-bindings.zsh 2>/dev/null || true
 [ -f ~/.zsh/fzf-tab/fzf-tab.plugin.zsh ] && source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh || true
 
 # Syntax highlighting
