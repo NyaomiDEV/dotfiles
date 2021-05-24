@@ -355,6 +355,7 @@ source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring
 
 # Node Version Manager
 [ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh || true
+[ -f /usr/share/zsh/plugins/zsh-load-nvmrc/load-nvmrc.zsh ] && source /usr/share/zsh/plugins/zsh-load-nvmrc/load-nvmrc.zsh || true
 
 #
 # Keybinds

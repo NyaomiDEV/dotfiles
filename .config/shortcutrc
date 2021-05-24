@@ -1,6 +1,6 @@
-alias zshrc="$EDITOR ~/.zshrc" 
-alias shortcutrc="$EDITOR ~/.config/shortcutrc" 
-alias aliasrc="$EDITOR ~/.config/aliasrc" 
+alias zshrc="$EDITOR ~/.zshrc"
+alias shortcutrc="$EDITOR ~/.config/shortcutrc"
+alias aliasrc="$EDITOR ~/.config/aliasrc"
 
 function dotupdate() {
 	local curdir=$(pwd)
