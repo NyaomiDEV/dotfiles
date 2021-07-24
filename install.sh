@@ -10,7 +10,7 @@ fi
 echo "Naomi's Dotfiles!"
 
 packages="pywal-git git zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-syntax-highlighting"
-optional_packages="zsh-fast-syntax-highlighting cod fzf bat"
+optional_packages="zsh-fast-syntax-highlighting cod fzf bat ttf-nerd-fonts-symbols"
 
 not_found=""
 optional_not_found=""
@@ -38,7 +38,10 @@ fi
 
 a="/$0"; a=${a%/*}; a=${a#/}; a=${a:-.}; BASEDIR=$(cd "$a"; pwd -P)
 
-files=$(find $BASEDIR -type f -not -path "$BASEDIR/.git/*" -not -path "$BASEDIR/install.sh" -not -path "$BASEDIR/README.md")
+files=$(find "$BASEDIR" -type f -not -path "$BASEDIR/.git/*" -not -path "$BASEDIR/install.sh" -not -path "$BASEDIR/README.md")
+
+oldIFS=$IFS
+IFS=$'\n'
 
 for file in $files; do
 	echo "---"
@@ -63,6 +66,7 @@ for file in $files; do
 	ln -s "$file" "$HOME/$relative" 2>/dev/null
 done
 
+IFS=$oldIFS
 echo "---"
 
 while

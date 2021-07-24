@@ -1,7 +1,8 @@
+alias la="ls -la --color=auto"
 alias zshrc="$EDITOR ~/.zshrc"
 alias shortcutrc="$EDITOR ~/.config/shortcutrc"
 alias aliasrc="$EDITOR ~/.config/aliasrc"
-
+alias usbfix="sudo pkill -9 usbmuxd; sudo rm /var/run/usbmuxd; sudo usbmuxd --user usbmux --udev"
 function dotupdate() {
 	local curdir=$(pwd)
 	cd $(dirname $(realpath .zshrc))
@@ -16,4 +17,37 @@ function dotpull() {
 	cd $(dirname $(realpath .zshrc))
 	git pull
 	cd $curdir
+}
+
+function ts-init() {
+	if [ -z "$1" ]; then
+		1="."
+	fi
+
+	git clone --depth=1 https://github.com/AryToNeX/naomi-ts-template "$1" && rm -rf "$1/.git"
+}
+
+function transfer() {
+	if [ $# -eq 0 ]; then
+		echo "No arguments specified.\nUsage:\n transfer <file|directory>\n ... | transfer <file_name>" >&2 ;
+		return 1;
+	fi;
+	if tty -s; then
+		file="$1";
+		file_name=$(basename "$file");
+		if [ ! -e "$file" ]; then
+			echo "$file: No such file or directory" >&2;
+			return 1;
+		fi;
+
+		if [ -d "$file" ]; then
+			file_name="$file_name.zip" ,;
+			(cd "$file" && zip -r -q - .) | curl --progress-bar --upload-file "-" "https://transfer.sh/$file_name" | tee /dev/null,;
+		else
+			cat "$file" | curl --progress-bar --upload-file "-" "https://transfer.sh/$file_name" | tee /dev/null;
+		fi;
+	else
+		file_name=$1;
+		curl --progress-bar --upload-file "-" "https://transfer.sh/$file_name" | tee /dev/null;
+	fi;
 }

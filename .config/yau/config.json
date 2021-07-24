@@ -1,0 +1,10 @@
+{
+  "warmupSeconds": 30,
+  "checkIntervalSeconds": 3600,
+  "notificationDurationSeconds": 10,
+  "snoozeDurationSeconds": 18000,
+  "aurHelperBinary": "/usr/bin/paru",
+  "terminalBinary": "/usr/bin/konsole",
+  "Syy": false,
+  "discardSameUpdatesNotification": true
+}
