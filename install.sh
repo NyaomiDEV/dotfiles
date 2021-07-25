@@ -38,7 +38,7 @@ fi
 
 a="/$0"; a=${a%/*}; a=${a#/}; a=${a:-.}; BASEDIR=$(cd "$a"; pwd -P)
 
-files=$(find "$BASEDIR" -type f -not -path "$BASEDIR/.git/*" -not -path "$BASEDIR/install.sh" -not -path "$BASEDIR/README.md")
+files=$(find "$BASEDIR" -type f -not -path "$BASEDIR/.git/*" -not -path "$BASEDIR/install.sh" -not -path "$BASEDIR/install_zsh_only.sh" -not -path "$BASEDIR/README.md")
 
 oldIFS=$IFS
 IFS=$'\n'
@@ -86,12 +86,12 @@ echo "[!] Doing the extra work now"
 echo "[+] (future) Color schemes linkage"
 echo "[!] Those links may not be solvable right away so please set a wallpaper with wal"
 mkdir -p $HOME/.local/share/color-schemes 2>/dev/null
-ln -s $HOME/.cache/wal/colors-kde.colors $HOME/.local/share/color-schemes/colors-kde.colors
+ln -fs $HOME/.cache/wal/colors-kde.colors $HOME/.local/share/color-schemes/colors-kde.colors
 
 mkdir -p $HOME/.local/share/konsole 2>/dev/null
-ln -s $HOME/.cache/wal/colors-konsole.colorscheme $HOME/.local/share/konsole/colors-konsole.colorscheme
-ln -s $HOME/.cache/wal/colors-konsole-blurry.colorscheme $HOME/.local/share/konsole/colors-konsole-blurry.colorscheme
-ln -s $HOME/.cache/wal/colors-konsole-blurry-alt.colorscheme $HOME/.local/share/konsole/colors-konsole-blurry-alt.colorscheme
+ln -fs $HOME/.cache/wal/colors-konsole.colorscheme $HOME/.local/share/konsole/colors-konsole.colorscheme
+ln -fs $HOME/.cache/wal/colors-konsole-blurry.colorscheme $HOME/.local/share/konsole/colors-konsole-blurry.colorscheme
+ln -fs $HOME/.cache/wal/colors-konsole-blurry-alt.colorscheme $HOME/.local/share/konsole/colors-konsole-blurry-alt.colorscheme
 
 echo "[+] fzf-tab plugin for Zsh"
 mkdir -p $HOME/.zsh 2>/dev/null
