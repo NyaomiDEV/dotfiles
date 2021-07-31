@@ -31,7 +31,7 @@ function ts-init() {
 		1="."
 	fi
 
-	git clone --depth=1 https://github.com/AryToNeX/naomi-ts-template "$1" && rm -rf "$1/.git"
+	git clone --depth=1 https://github.com/AryToNeX/naomi-ts-template "$1" && rm -rf "$1/.git" && yarn
 }
 
 function transfer() {
