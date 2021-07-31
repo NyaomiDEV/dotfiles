@@ -19,6 +19,13 @@ function dotpull() {
 	cd $curdir
 }
 
+function zshupdate(){
+	local curdir=$(pwd)
+	cd ~/.zsh
+	(ls -d */ | while read DIR; do cd $DIR && git pull; done) || true
+	cd $curdir
+}
+
 function ts-init() {
 	if [ -z "$1" ]; then
 		1="."
