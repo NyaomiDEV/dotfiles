@@ -335,6 +335,9 @@ zle -N cd-forward
 # Plugin loads (custom order)
 #
 
+# Abbreviations
+source /usr/share/zsh/plugins/zsh-abbr/zsh-abbr.plugin.zsh
+
 # Autosuggestions
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
@@ -345,6 +348,10 @@ if where fzf >/dev/null; then
 	source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh 2>/dev/null || true
 fi
 
+# Node Version Manager
+[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh || true
+[ -f /usr/share/zsh/plugins/zsh-load-nvmrc/load-nvmrc.zsh ] && source /usr/share/zsh/plugins/zsh-load-nvmrc/load-nvmrc.zsh || true
+
 # Syntax highlighting
 [ -f /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ] &&
 	source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ||
@@ -352,10 +359,6 @@ fi
 
 # History substring search
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
-
-# Node Version Manager
-[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh || true
-[ -f /usr/share/zsh/plugins/zsh-load-nvmrc/load-nvmrc.zsh ] && source /usr/share/zsh/plugins/zsh-load-nvmrc/load-nvmrc.zsh || true
 
 #
 # Keybinds
