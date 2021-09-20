@@ -6,7 +6,7 @@ switch-to-activity-57c92588-3a51-4d35-bcbe-613c403a26f3=none,none,Switch to acti
 Switch keyboard layout to Italian=none,none,Switch keyboard layout to Italian
 Switch keyboard layout to Italian (US)=none,none,Switch keyboard layout to Italian (US)
 Switch to Next Keyboard Layout=Ctrl+Alt+K,Ctrl+Alt+K,Switch to Next Keyboard Layout
-_k_friendly_name=Keyboard Layout Switcher
+_k_friendly_name=KWin
 
 [kaccess]
 Toggle Screen Reader On and Off=Meta+Alt+S,Meta+Alt+S,Toggle Screen Reader On and Off
@@ -44,7 +44,7 @@ Lock Session=\tCtrl+Alt+L\tScreensaver,Meta+L\tCtrl+Alt+L\tScreensaver,Lock Sess
 Log Out=Ctrl+Alt+Del,Ctrl+Alt+Del,Log Out
 Log Out Without Confirmation=Ctrl+Alt+Shift+Del,none,Log Out Without Confirmation
 Reboot Without Confirmation=Ctrl+Alt+Shift+PgUp,none,Reboot Without Confirmation
-_k_friendly_name=Session Management
+_k_friendly_name=KWin
 
 [kwin]
 Activate Window Demanding Attention=Ctrl+Alt+A,Ctrl+Alt+A,Activate Window Demanding Attention

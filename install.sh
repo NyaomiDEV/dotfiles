@@ -93,8 +93,12 @@ ln -fs $HOME/.cache/wal/colors-konsole.colorscheme $HOME/.local/share/konsole/co
 ln -fs $HOME/.cache/wal/colors-konsole-blurry.colorscheme $HOME/.local/share/konsole/colors-konsole-blurry.colorscheme
 ln -fs $HOME/.cache/wal/colors-konsole-blurry-alt.colorscheme $HOME/.local/share/konsole/colors-konsole-blurry-alt.colorscheme
 
-echo "[+] fzf-tab plugin for Zsh"
 mkdir -p $HOME/.zsh 2>/dev/null
+
+echo "[+] fzf-tab plugin for Zsh"
 [ -d "$HOME/.zsh/fzf-tab" ] || git clone "https://github.com/Aloxaf/fzf-tab.git" "$HOME/.zsh/fzf-tab"
+
+echo "[+] su-zsh-plugin"
+[ -d "$HOME/.zsh/su-zsh-plugin" ] || git clone "https://github.com/AryToNeX/su-zsh-plugin.git" "$HOME/.zsh/su-zsh-plugin"
 
 echo "[!] All done!"
