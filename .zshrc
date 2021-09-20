@@ -135,6 +135,12 @@ HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
 # Selected item in menu list color
 SELECTED_ITEM_MENULIST_COLOR="1;30;47"
 
+# Su command
+if [ -f ~/.zsh/su-zsh-plugin/su.plugin.zsh ]; then
+	where doas >/dev/null && SU_COMMAND=doas ||
+	where sudo >/dev/null && SU_COMMAND=sudo
+fi
+
 #
 # Options
 #
@@ -356,6 +362,10 @@ fi
 [ -f /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ] &&
 	source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ||
 	source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Su by pressing double ESC
+[ -f ~/.zsh/su-zsh-plugin/su.plugin.zsh ] &&
+	source ~/.zsh/su-zsh-plugin/su.plugin.zsh || true
 
 # History substring search
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
