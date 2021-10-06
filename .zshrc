@@ -28,6 +28,9 @@ where bat >/dev/null && alias cat="bat -pp" || true
 # Modules and functions loading
 #
 
+# Add ZSH Hook
+autoload -U add-zsh-hook
+
 # Colors
 autoload -U colors
 
@@ -325,6 +328,25 @@ function cd-up () {
   redraw-prompt
 }
 
+function dotenv() {
+	if [ ! -f ".env" ]; then
+		return
+	fi
+
+	echo -n "dotenv: found a dotenv file. Source it? (Y/n) "
+	read -k 1 confirmation
+	[ "$confirmation" = $'\n' ] || echo
+
+	case "$confirmation" in
+		[nN]) return ;;
+		*) ;; # yes
+	esac
+
+	zsh -fn ".env" || echo "dotenv: error when sourcing, check syntax." >&2
+	setopt localoptions allexport
+	source ".env"
+}
+
 #
 # ZLE Widgets
 #
@@ -336,6 +358,12 @@ zle -N edit-command-line
 zle -N cd-up
 zle -N cd-back
 zle -N cd-forward
+
+#
+# ZSH Hooks
+#
+
+add-zsh-hook chpwd dotenv
 
 #
 # Plugin loads (custom order)
@@ -466,8 +494,15 @@ zstyle ':completion:*:default' select-prompt $'\e[01;35m -- %M    %P -- \e[00;00
 # Tab key behaviour
 zstyle ':autocomplete:tab:*' widget-style menu-complete
 
+#
+# Stuff that needs to be run when ZSH starts
+#
+
 # Initialize completion
 compinit -d "$HOME/.cache/zsh/compdump"
 
 # Use cod (completion daemon) if it is available in the system
 where cod >/dev/null && source <(cod init $$ zsh) || true
+
+# Source dotenv
+dotenv
