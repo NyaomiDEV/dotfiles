@@ -383,7 +383,7 @@ if where fzf >/dev/null; then
 fi
 
 # Node Version Manager
-[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh || true
+[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh 2>/dev/null || true
 [ -f /usr/share/zsh/plugins/zsh-load-nvmrc/load-nvmrc.zsh ] && source /usr/share/zsh/plugins/zsh-load-nvmrc/load-nvmrc.zsh || true
 
 # Syntax highlighting
