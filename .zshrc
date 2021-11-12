@@ -465,7 +465,11 @@ zstyle ':completion:*' insert-tab false
 zstyle ':completion:*' rehash true
 
 # Case Insensitive -> Partial Word (cs) -> Substring completion
-zstyle ':completion:*' matcher-list '' 'm:{A-Záàâãåäæçéèêëíìîïñóòôöõøœúùûüa-zÁÀÂÃÅÄÆÇÉÈÊËÍÌÎÏÑÓÒÔÖÕØŒÚÙÛÜ}={a-zÁÀÂÃÅÄÆÇÉÈÊËÍÌÎÏÑÓÒÔÖÕØŒÚÙÛÜA-Záàâãåäæçéèêëíìîïñóòôöõøœúùûü}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' matcher-list \
+	'' \
+	'm:{A-Záàâãåäæçéèêëíìîïñóòôöõøœúùûüa-zÁÀÂÃÅÄÆÇÉÈÊËÍÌÎÏÑÓÒÔÖÕØŒÚÙÛÜ}={a-zÁÀÂÃÅÄÆÇÉÈÊËÍÌÎÏÑÓÒÔÖÕØŒÚÙÛÜA-Záàâãåäæçéèêëíìîïñóòôöõøœúùûü}' \
+	'r:|[._-]=* r:|=*' \
+	'l:|=* r:|=*'
 
 # Colors
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} ma=${SELECTED_ITEM_MENULIST_COLOR}
