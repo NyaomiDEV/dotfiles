@@ -1,6 +1,7 @@
 #!/bin/sh
 
 wal $@
+plasma-theme -c ~/.cache/wal/colors-kde.colors 2> /dev/null
 
 which wal_steam && wal_steam || true
 which wal-discord && wal-discord || true

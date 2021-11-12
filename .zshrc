@@ -300,6 +300,23 @@ function redraw-prompt () {
 	zle -R
 }
 
+# Source: https://github.com/phiresky/ripgrep-all
+if where rga >/dev/null; then
+	function rga-fzf() {
+		RG_PREFIX="rga --files-with-matches"
+		local file
+		file="$(
+			FZF_DEFAULT_COMMAND="$RG_PREFIX '$1'" \
+				fzf --sort --preview="[[ ! -z {} ]] && rga --pretty --context 5 {q} {}" \
+					--phony -q "$1" \
+					--bind "change:reload:$RG_PREFIX {q}" \
+					--preview-window="70%:wrap"
+		)" &&
+		echo "opening $file" &&
+		xdg-open "$file"
+	}
+fi
+
 # Source: https://github.com/romkatv/powerlevel10k/issues/663
 function cd-rotate () {
 	emulate -L zsh
@@ -447,11 +464,8 @@ zstyle ':completion:*' insert-tab false
 # Automatically rehash commands // Source: http://www.zsh.org/mla/users/2011/msg00531.html
 zstyle ':completion:*' rehash true
 
-# Case insensitivity
-zstyle ":completion:*" matcher-list 'm:{A-Záàâãåäæçéèêëíìîïñóòôöõøœúùûüa-zÁÀÂÃÅÄÆÇÉÈÊËÍÌÎÏÑÓÒÔÖÕØŒÚÙÛÜ}={a-zÁÀÂÃÅÄÆÇÉÈÊËÍÌÎÏÑÓÒÔÖÕØŒÚÙÛÜA-Záàâãåäæçéèêëíìîïñóòôöõøœúùûü}'
-
 # Case Insensitive -> Partial Word (cs) -> Substring completion
-zstyle ':completion:*' matcher-list 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' matcher-list '' 'm:{A-Záàâãåäæçéèêëíìîïñóòôöõøœúùûüa-zÁÀÂÃÅÄÆÇÉÈÊËÍÌÎÏÑÓÒÔÖÕØŒÚÙÛÜ}={a-zÁÀÂÃÅÄÆÇÉÈÊËÍÌÎÏÑÓÒÔÖÕØŒÚÙÛÜA-Záàâãåäæçéèêëíìîïñóòôöõøœúùûü}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
 # Colors
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} ma=${SELECTED_ITEM_MENULIST_COLOR}

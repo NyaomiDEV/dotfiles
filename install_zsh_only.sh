@@ -29,6 +29,8 @@ if [ -n "$optional_not_found" ]; then
 	echo "[!] Please install them to have the full experience!"
 fi
 
+a="/$0"; a=${a%/*}; a=${a#/}; a=${a:-.}; BASEDIR=$(cd "$a"; pwd -P)
+
 files=$(find "$BASEDIR" -type f -name ".zshrc" -or -name ".profile" -or -name ".zprofile")
 
 oldIFS=$IFS
