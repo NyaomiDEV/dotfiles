@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=img2pdf
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=image/*;
+Actions=img2pdf
+
+[Desktop Action img2pdf]
+Name=Make PDF out of image(s)
+Exec=img2pdf --output "image2pdf_result.pdf" %F
+Icon=application-pdf
