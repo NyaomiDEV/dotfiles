@@ -3,6 +3,7 @@ alias zshrc="$EDITOR ~/.zshrc"
 alias shortcutrc="$EDITOR ~/.config/shortcutrc"
 alias aliasrc="$EDITOR ~/.config/aliasrc"
 alias usbfix="sudo pkill -9 usbmuxd; sudo rm /var/run/usbmuxd; sudo usbmuxd --user usbmux --udev"
+
 function dotupdate() {
 	local curdir=$(pwd)
 	cd $(dirname $(realpath .zshrc))
@@ -57,4 +58,15 @@ function transfer() {
 		file_name=$1;
 		curl --progress-bar --upload-file "-" "https://transfer.sh/$file_name" | tee /dev/null;
 	fi;
+}
+
+function sunamu-lyricsid(){
+	echo -n "$(playerctl metadata xesam:artist):$(playerctl metadata xesam:album):$(playerctl metadata xesam:title)" | md5sum | cut -f1 -d" ";
+}
+
+function rmlyrics(){
+	id=$(sunamu-lyricsid);
+	dir="${HOME}/.config/sunamu/Lyrics Cache/${id}";
+	echo Removing "${dir}"
+	rm "${dir}"
 }

@@ -1,0 +1,80 @@
+####################################
+# Made by Naomi Calabretta in 2022
+####################################
+
+[Desktop Entry]
+Name=Xournal++ Exports
+Icon=com.github.xournalpp.xournalpp
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+X-KDE-Priority=TopLevel
+X-KDE-StartupNotify=false
+X-KDE-Submenu=Export Xournal++ document
+Actions=xopp-pdf;xopp-pdf-prog;xopp-pdf-nobg;xopp-pdf-nobg-prog;xopp-pdf-norl;xopp-pdf-norl-prog;_SEPARATOR_;xopp-png;xopp-png-nobg;xopp-png-norl;_SEPARATOR_;xopp-svg;xopp-svg-nobg;xopp-svg-norl;
+MimeType=application/x-xoj;application/x-xojpp;application/x-xopp;application/x-xopt;
+
+####################################
+
+[Desktop Action xopp-pdf]
+Name=Export as PDF
+Exec=FILE="%f"; BASENAME="${FILE%%.*}"; xournalpp "$FILE" -p "$BASENAME.pdf"
+Icon=application-pdf
+
+[Desktop Action xopp-pdf-prog]
+Name=Export as PDF (progressive layers)
+Exec=FILE="%f"; BASENAME="${FILE%%.*}"; xournalpp "$FILE" -p "$BASENAME.pdf" --export-layers-progressively
+Icon=application-pdf
+
+[Desktop Action xopp-pdf-nobg]
+Name=Export as PDF (no background)
+Exec=FILE="%f"; BASENAME="${FILE%%.*}"; xournalpp "$FILE" -p "$BASENAME.pdf" --export-no-background
+Icon=application-pdf
+
+[Desktop Action xopp-pdf-nobg-prog]
+Name=Export as PDF (no background - progressive layers)
+Exec=FILE="%f"; BASENAME="${FILE%%.*}"; xournalpp "$FILE" -p "$BASENAME.pdf" --export-no-background --export-layers-progressively
+Icon=application-pdf
+
+[Desktop Action xopp-pdf-norl]
+Name=Export as PDF (no ruling)
+Exec=FILE="%f"; BASENAME="${FILE%%.*}"; xournalpp "$FILE" -p "$BASENAME.pdf" --export-no-ruling
+Icon=application-pdf
+
+[Desktop Action xopp-pdf-norl-prog]
+Name=Export as PDF (no ruling - progressive layers)
+Exec=FILE="%f"; BASENAME="${FILE%%.*}"; xournalpp "$FILE" -p "$BASENAME.pdf" --export-no-ruling --export-layers-progressively
+Icon=application-pdf
+
+####################################
+
+[Desktop Action xopp-png]
+Name=Export as image
+Exec=FILE="%f"; BASENAME="${FILE%%.*}"; xournalpp "$FILE" -i "$BASENAME.png"
+Icon=image-png
+
+[Desktop Action xopp-png-nobg]
+Name=Export as image (no background)
+Exec=FILE="%f"; BASENAME="${FILE%%.*}"; xournalpp "$FILE" -i "$BASENAME.png" --export-no-background
+Icon=image-png
+
+[Desktop Action xopp-png-norl]
+Name=Export as image (no ruling)
+Exec=FILE="%f"; BASENAME="${FILE%%.*}"; xournalpp "$FILE" -i "$BASENAME.png" --export-no-ruling
+Icon=image-png
+
+####################################
+
+[Desktop Action xopp-svg]
+Name=Export as vector image
+Exec=FILE="%f"; BASENAME="${FILE%%.*}"; xournalpp "$FILE" -i "$BASENAME.svg"
+Icon=image-svg+xml
+
+[Desktop Action xopp-svg-nobg]
+Name=Export as vector image (no background)
+Exec=FILE="%f"; BASENAME="${FILE%%.*}"; xournalpp "$FILE" -i "$BASENAME.svg" --export-no-background
+Icon=image-svg+xml
+
+[Desktop Action xopp-svg-norl]
+Name=Export as vector image (no ruling)
+Exec=FILE="%f"; BASENAME="${FILE%%.*}"; xournalpp "$FILE" -i "$BASENAME.svg" --export-no-ruling
+Icon=image-svg+xml
