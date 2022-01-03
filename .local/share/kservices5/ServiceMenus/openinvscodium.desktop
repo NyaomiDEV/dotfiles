@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Open in VSCodium
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=all/all;
+X-KDE-Priority=TopLevel
+Actions=open-vscodium
+
+[Desktop Action open-vscodium]
+Name=Open in VSCodium
+Exec=vscodium %f
+Icon=vscodium
