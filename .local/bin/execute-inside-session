@@ -1,0 +1,13 @@
+#!/bin/sh
+
+SESSIONS=$(loginctl show-user $UID | grep Display | cut -d '=' -f 2)
+GRAPHICAL=${SESSIONS[0]}
+PID=$(loginctl show-session $GRAPHICAL | grep Leader | cut -d '=' -f 2)
+
+while pgrep -P $PID >/dev/null 2>&1; do
+	PID=$(pgrep -P $PID -l | grep -v dbus-daemon | head -n1 | cut -d ' ' -f 1)
+done
+
+export $(cat /proc/$PID/environ | xargs -0)
+
+exec "$@"

@@ -1,0 +1,4 @@
+type = process
+command = /home/naomi/.local/bin/execute-inside-session /usr/bin/otd
+restart = true
+smooth-recovery = true
