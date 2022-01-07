@@ -5,22 +5,19 @@ GRAPHICAL=$(loginctl show-user $UID | grep ^Display=)
 GRAPHICAL=${GRAPHICAL#Display=}
 GRAPHICAL=${GRAPHICAL[0]}
 
-# Save the session leader PID to processes array (which will get unset later)
+# Save the session leader PID
 processes=$(loginctl show-session $GRAPHICAL | grep ^Leader=)
 processes=${processes#Leader=}
 
-# Get last grandchildren of the processes array which are not dbus-daemon instances
+# Get the first of the last grandchildren of the processes array which are not dbus-daemon instances
 while [ -n "$processes" ]; do
 
 	for process in $processes; do
-		read children < /proc/$process/task/$process/children 2>/dev/null
+		read children < /proc/$process/task/$process/children
 
 		if [ -z "$children" ] && [ ! "/proc/$process/exe" -ef "/usr/bin/dbus-daemon" ]; then
-			if [ -z "$result" ]; then
-				result="$process"
-			else
-				result="$result $process"
-			fi
+			PID="$process"
+			break
 		fi
 
 		list="$list $children"
@@ -31,13 +28,8 @@ while [ -n "$processes" ]; do
 
 done
 
-# Throw the processes array away, we don't need it anymore
-unset processes
-
-# Result of operation is on $result
-
-# Get first child of the list
-PID="${result[0]}"
+# If $PID is empty then we failed miserably
+[ -z $PID ] && exit 1
 
 # Copy environment from that process
 while read -d $'\0' variable; do
