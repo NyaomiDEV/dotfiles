@@ -1,13 +1,48 @@
 #!/bin/sh
 
-SESSIONS=$(loginctl show-user $UID | grep Display | cut -d '=' -f 2)
-GRAPHICAL=${SESSIONS[0]}
-PID=$(loginctl show-session $GRAPHICAL | grep Leader | cut -d '=' -f 2)
+# Get first graphical session
+GRAPHICAL=$(loginctl show-user $UID | grep ^Display=)
+GRAPHICAL=${GRAPHICAL#Display=}
+GRAPHICAL=${GRAPHICAL[0]}
 
-while pgrep -P $PID >/dev/null 2>&1; do
-	PID=$(pgrep -P $PID -l | grep -v dbus-daemon | head -n1 | cut -d ' ' -f 1)
+# Save the session leader PID to processes array (which will get unset later)
+processes=$(loginctl show-session $GRAPHICAL | grep ^Leader=)
+processes=${processes#Leader=}
+
+# Get last grandchildren of the processes array which are not dbus-daemon instances
+while [ -n "$processes" ]; do
+
+	for process in $processes; do
+		read children < /proc/$process/task/$process/children 2>/dev/null
+
+		if [ -z "$children" ] && [ ! "/proc/$process/exe" -ef "/usr/bin/dbus-daemon" ]; then
+			if [ -z "$result" ]; then
+				result="$process"
+			else
+				result="$result $process"
+			fi
+		fi
+
+		list="$list $children"
+	done
+
+	processes=$list
+	unset list children
+
 done
 
-export $(cat /proc/$PID/environ | xargs -0)
+# Throw the processes array away, we don't need it anymore
+unset processes
 
+# Result of operation is on $result
+
+# Get first child of the list
+PID="${result[0]}"
+
+# Copy environment from that process
+while read -d $'\0' variable; do
+    export $variable
+done < /proc/$PID/environ
+
+# Execute command
 exec "$@"
