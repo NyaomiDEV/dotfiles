@@ -1,4 +1,6 @@
 #!/bin/sh
+# "It's dangerous to go alone! Take this."
+# Brainstormed and cried upon by Naomi Calabretta in the year 2022
 
 # Get first graphical session
 GRAPHICAL=$(loginctl show-user $UID | grep ^Display=)
@@ -9,7 +11,21 @@ GRAPHICAL=${GRAPHICAL[0]}
 processes=$(loginctl show-session $GRAPHICAL | grep ^Leader=)
 processes=${processes#Leader=}
 
-# Get the first of the last grandchildren of the processes array which are not dbus-daemon instances
+# LINUX PROCESS TREE
+# Session Leader PID                                  <-- we are here
+# |                                                       (usually a wrapper command, like sddm-helper
+# |                                                       BUT it could also be the one below)
+# |
+# |-- Actual session command                          <-- (probably wrapped with dbus-run-session)
+#     |                                                   (under our user, but doesn't have all of our environment)
+#     |
+#     |-- dbus-daemon                                 <-- (has our environment except DBUS_SESSION_BUS_ADDRESS, which we want)
+#     |
+#     |-- Our graphical environment's "main process"  <-- this is ideally our target (has all the environment variables!)
+#
+# Basically we iterate through the grandchildren of the leader PID
+# until we find a child that doesn't have any children
+# (that hopefully is our real session with our real environment)
 while [ -n "$processes" ]; do
 
 	for process in $processes; do
