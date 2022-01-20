@@ -1,4 +1,4 @@
 type = process
-command = /home/naomi/.local/bin/execute-inside-session /home/naomi/.yarn/bin/yau
+command = /home/naomi/.yarn/bin/yau
 restart = true
 smooth-recovery = true

@@ -7,5 +7,5 @@ Actions=img2pdf
 
 [Desktop Action img2pdf]
 Name=Make PDF out of image(s)
-Exec=img2pdf --output "image2pdf_result.pdf" %F
+Exec=DEST=$(kdialog --title "Save merged images as..." --getsavefilename . application/pdf); img2pdf --output "$DEST" %F
 Icon=application-pdf

@@ -1,5 +1,5 @@
 type = process
-command = /home/naomi/.local/bin/execute-inside-session /usr/bin/wireplumber
+command = /usr/bin/wireplumber
 depends-on = pipewire
 restart = true
 smooth-recovery = true
