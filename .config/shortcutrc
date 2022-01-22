@@ -65,8 +65,14 @@ function sunamu-lyricsid(){
 }
 
 function rmlyrics(){
-	id=$(sunamu-lyricsid);
+	id="$(sunamu-lyricsid)";
 	dir="${HOME}/.config/sunamu/Lyrics Cache/${id}";
 	echo Removing "${dir}"
 	rm "${dir}"
+}
+
+function openlyrics(){
+	id="$(sunamu-lyricsid)";
+	dir="$HOME/.config/sunamu/Lyrics Cache/${id}";
+	json5 < "${dir}" | jq .
 }
