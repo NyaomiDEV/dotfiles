@@ -1,0 +1,3 @@
+type = scripted
+waits-for.d = /home/naomi/.config/dinit.d/boot.d
+command = /usr/bin/true

@@ -41,6 +41,9 @@ zmodload zsh/complist
 # Edit command line
 autoload -U edit-command-line
 
+# Zpty
+zmodload zsh/zpty
+
 #
 # Colors
 #
