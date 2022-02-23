@@ -2,7 +2,27 @@ alias la="ls -la --color=auto"
 alias zshrc="$EDITOR ~/.zshrc"
 alias shortcutrc="$EDITOR ~/.config/shortcutrc"
 alias aliasrc="$EDITOR ~/.config/aliasrc"
-alias usbfix="sudo pkill -9 usbmuxd; sudo rm /var/run/usbmuxd; sudo usbmuxd --user usbmux --udev"
+
+if [ "$(uname)" = "Linux" ]; then 
+	alias usbfix="sudo pkill -9 usbmuxd; sudo rm /var/run/usbmuxd; sudo usbmuxd --user usbmux --udev"
+
+	function sunamu-lyricsid(){
+		echo -n "$(playerctl metadata xesam:artist):$(playerctl metadata xesam:album):$(playerctl metadata xesam:title)" | md5sum | cut -f1 -d" ";
+	}
+
+	function rmlyrics(){
+		id="$(sunamu-lyricsid)";
+		dir="${HOME}/.config/sunamu/Lyrics Cache/${id}";
+		echo Removing "${dir}"
+		rm "${dir}"
+	}
+
+	function openlyrics(){
+		id="$(sunamu-lyricsid)";
+		dir="$HOME/.config/sunamu/Lyrics Cache/${id}";
+		json5 < "${dir}" | jq .
+	}
+fi
 
 function dotupdate() {
 	local curdir=$(pwd)
@@ -22,7 +42,7 @@ function dotpull() {
 
 function zshupdate(){
 	local curdir=$(pwd)
-	cd ~/.zsh
+	cd ~/.zsh/plugins
 	(ls -d */ | while read DIR; do cd $DIR && git pull; done) || true
 	cd $curdir
 }
@@ -32,7 +52,7 @@ function ts-init() {
 		1="."
 	fi
 
-	git clone --depth=1 https://github.com/AryToNeX/naomi-ts-template "$1" && rm -rf "$1/.git" && yarn
+	git clone --depth=1 https://github.com/NyaomiDEV/naomi-ts-template "$1" && rm -rf "$1/.git" && yarn
 }
 
 function transfer() {
@@ -58,21 +78,4 @@ function transfer() {
 		file_name=$1;
 		curl --progress-bar --upload-file "-" "https://transfer.sh/$file_name" | tee /dev/null;
 	fi;
-}
-
-function sunamu-lyricsid(){
-	echo -n "$(playerctl metadata xesam:artist):$(playerctl metadata xesam:album):$(playerctl metadata xesam:title)" | md5sum | cut -f1 -d" ";
-}
-
-function rmlyrics(){
-	id="$(sunamu-lyricsid)";
-	dir="${HOME}/.config/sunamu/Lyrics Cache/${id}";
-	echo Removing "${dir}"
-	rm "${dir}"
-}
-
-function openlyrics(){
-	id="$(sunamu-lyricsid)";
-	dir="$HOME/.config/sunamu/Lyrics Cache/${id}";
-	json5 < "${dir}" | jq .
 }

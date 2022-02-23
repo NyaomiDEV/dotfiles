@@ -7,4 +7,3 @@ if which yarn >/dev/null; then
 fi
 
 export VDPAU_DRIVER=va_gl
-

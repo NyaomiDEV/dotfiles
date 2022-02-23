@@ -282,7 +282,7 @@ function git-status () {
 
 function nvm-version() {
 	emulate -L zsh
-	[ ! -f "/usr/share/nvm/init-nvm.sh" ] && return
+	[ ! $NVM_DIR ] && return
 	local nvmver
 	nvmver=$(nvm version)
 	[ "$nvmver" = "system" ] && return
@@ -386,37 +386,64 @@ zle -N cd-forward
 add-zsh-hook chpwd dotenv
 
 #
-# Plugin loads (custom order)
+# CLI tools load
 #
 
-# Abbreviations
-source /usr/share/zsh/plugins/zsh-abbr/zsh-abbr.plugin.zsh
-
-# Autosuggestions
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# Fzf (tab completion / key bindings)
+# Fzf
 if where fzf >/dev/null; then
-	source /usr/share/fzf/completion.zsh 2>/dev/null || true
-	source /usr/share/fzf/key-bindings.zsh 2>/dev/null || true
-	source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh 2>/dev/null || true
+	fzf_location=$(whence -S fzf)
+	fzf_location=${fzf_location%/*}
+	if [ -d "$fzf_location/shell" ]; then # We are inside a brew package
+		source $fzf_location/shell/completion.zsh 2>/dev/null
+		source $fzf_location/shell/key-bindings.zsh 2>/dev/null
+	elif [ -d "$fzf_location/share/fzf" ]; then # We are inside /usr or /usr/local
+		source $fzf_location/share/fzf/completion.zsh 2>/dev/null
+		source $fzf_location/share/fzf/key-bindings.zsh 2>/dev/null
+	fi
 fi
 
 # Node Version Manager
-[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh 2>/dev/null || true
-[ -f /usr/share/zsh/plugins/zsh-load-nvmrc/load-nvmrc.zsh ] && source /usr/share/zsh/plugins/zsh-load-nvmrc/load-nvmrc.zsh || true
+[ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
+source $NVM_DIR/nvm.sh
+
+#
+# Plugin loads (custom order)
+#
+function __plugin_loader(){
+	if [ -f "$HOME/.zsh/plugins/$1" ]; then
+		source "$HOME/.zsh/plugins/$1"
+	elif [ -f "/usr/local/share/zsh/plugins/$1" ]; then
+		source "/usr/local/share/zsh/plugins/$1"
+	elif [ -f "/usr/share/zsh/plugins/$1" ]; then
+		source "/usr/share/zsh/plugins/$1"
+	else
+		return 1
+	fi
+}
+
+# Abbreviations
+__plugin_loader zsh-abbr/zsh-abbr.plugin.zsh
+
+# Autosuggestions
+__plugin_loader zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Fzf
+if where fzf >/dev/null; then
+	__plugin_loader fzf-tab/fzf-tab.plugin.zsh 2>/dev/null || true
+fi
+
+# Node Version Manager
+__plugin_loader zsh-load-nvmrc/load-nvmrc.zsh || true
 
 # Syntax highlighting
-[ -f /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ] &&
-	source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ||
-	source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+__plugin_loader fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ||
+	__plugin_loader zsh-syntax-highlighting/zsh-syntax-highlighting.zsh || true
 
 # Su by pressing double ESC
-[ -f ~/.zsh/su-zsh-plugin/su.plugin.zsh ] &&
-	source ~/.zsh/su-zsh-plugin/su.plugin.zsh || true
+__plugin_loader su-zsh-plugin/su.plugin.zsh || true
 
 # History substring search
-source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+__plugin_loader zsh-history-substring-search/zsh-history-substring-search.zsh
 
 #
 # Keybinds
