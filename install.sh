@@ -9,8 +9,13 @@ fi
 
 echo "Naomi's Dotfiles!"
 
-packages="pywal-git git zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-syntax-highlighting"
-optional_packages="zsh-fast-syntax-highlighting cod fzf bat ttf-nerd-fonts-symbols"
+packages="pywal-git git zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-fast-syntax-highlighting"
+optional_packages="cod fzf bat ttf-nerd-fonts-symbols"
+
+git_packages="fzf-tab su-zsh-plugin"
+typeset -A sources
+sources[fzf-tab]="https://github.com/Aloxaf/fzf-tab.git"
+sources[su-zsh-plugin]="https://github.com/NyaomiDEV/su-zsh-plugin.git"
 
 not_found=""
 optional_not_found=""
@@ -36,9 +41,20 @@ if [ -n "$optional_not_found" ]; then
 	echo "[!] Please install them to have the full experience!"
 fi
 
+mkdir -p $HOME/.zsh/plugins 2>/dev/null
+
+for package in $git_packages; do
+	[ ! -d "$HOME/.zsh/plugins/$package" ] && git clone "${sources[$package]}" "$HOME/.zsh/plugins/$package"
+done
+
 a="/$0"; a=${a%/*}; a=${a#/}; a=${a:-.}; BASEDIR=$(cd "$a"; pwd -P)
 
-files=$(find "$BASEDIR" -type f -not -path "$BASEDIR/.git/*" -not -path "$BASEDIR/install.sh" -not -path "$BASEDIR/install_zsh_only.sh" -not -path "$BASEDIR/README.md")
+files=$(find "$BASEDIR" -type f \
+	-not -path "$BASEDIR/.git/*" \
+	-not -path "$BASEDIR/install.sh" \
+	-not -path "$BASEDIR/install_zsh_only.sh" \
+	-not -path "$BASEDIR/install_zsh_only_mac.sh" \
+	-not -path "$BASEDIR/README.md")
 
 oldIFS=$IFS
 IFS=$'\n'
@@ -92,13 +108,5 @@ mkdir -p $HOME/.local/share/konsole 2>/dev/null
 ln -fs $HOME/.cache/wal/colors-konsole.colorscheme $HOME/.local/share/konsole/colors-konsole.colorscheme
 ln -fs $HOME/.cache/wal/colors-konsole-blurry.colorscheme $HOME/.local/share/konsole/colors-konsole-blurry.colorscheme
 ln -fs $HOME/.cache/wal/colors-konsole-blurry-alt.colorscheme $HOME/.local/share/konsole/colors-konsole-blurry-alt.colorscheme
-
-mkdir -p $HOME/.zsh 2>/dev/null
-
-echo "[+] fzf-tab plugin for Zsh"
-[ -d "$HOME/.zsh/fzf-tab" ] || git clone "https://github.com/Aloxaf/fzf-tab.git" "$HOME/.zsh/fzf-tab"
-
-echo "[+] su-zsh-plugin"
-[ -d "$HOME/.zsh/su-zsh-plugin" ] || git clone "https://github.com/AryToNeX/su-zsh-plugin.git" "$HOME/.zsh/su-zsh-plugin"
 
 echo "[!] All done!"

@@ -1,42 +1,19 @@
 #!/bin/sh
  
-echo "Naomi's Zshrc! (Arch-based installer)"
+echo "Naomi's Zshrc! (macOS and other Linux distros installer)"
 
-packages="git zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-fast-syntax-highlighting"
-optional_packages="cod fzf bat ttf-nerd-fonts-symbols"
+packages="zsh-abbr zsh-autosuggestions zsh-history-substring-search zsh-fast-syntax-highlighting fzf-tab su-zsh-plugin"
 
-git_packages="fzf-tab su-zsh-plugin"
 typeset -A sources
+sources[zsh-abbr]="https://github.com/olets/zsh-abbr.git"
+sources[zsh-autosuggestions]="https://github.com/zsh-users/zsh-autosuggestions.git"
+sources[zsh-history-substring-search]="https://github.com/zsh-users/zsh-history-substring-search.git"
+sources[zsh-fast-syntax-highlighting]="https://github.com/zdharma/fast-syntax-highlighting.git"
 sources[fzf-tab]="https://github.com/Aloxaf/fzf-tab.git"
 sources[su-zsh-plugin]="https://github.com/NyaomiDEV/su-zsh-plugin.git"
 
-not_found=""
-optional_not_found=""
-
-for package in $packages; do
-	pacman -Qi "$package" >/dev/null 2>&1 || not_found="$not_found $package"
-done
-
-for package in $optional_packages; do
-	pacman -Qi "$package" >/dev/null 2>&1 || optional_not_found="$optional_not_found $package"
-done
-
-if [ -n "$not_found" ]; then
-	echo "---"
-	echo "[!] Missing packages: $not_found"
-	echo "[!] Please install them to ensure correct dotfiles functionality!"
-	exit 1
-fi
-
-if [ -n "$optional_not_found" ]; then
-	echo "---"
-	echo "[!] Missing optional packages: $optional_not_found"
-	echo "[!] Please install them to have the full experience!"
-fi
-
 mkdir -p $HOME/.zsh/plugins 2>/dev/null
-
-for package in $git_packages; do
+for package in $packages; do
 	[ ! -d "$HOME/.zsh/plugins/$package" ] && git clone "${sources[$package]}" "$HOME/.zsh/plugins/$package"
 done
 
@@ -76,4 +53,3 @@ for file in $files; do
 done
 
 IFS=$oldIFS
-

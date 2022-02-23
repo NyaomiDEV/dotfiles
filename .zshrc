@@ -292,6 +292,25 @@ function nvm-version() {
 	printf -- '%s' "$nvmver"
 }
 
+function load-nvmrc() {
+	emulate -L zsh
+	[ ! $NVM_DIR ] && return
+	local node_version="$(nvm version)"
+	local nvmrc_path="$(nvm_find_nvmrc)"
+
+	if [ -n "$nvmrc_path" ]; then
+		local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+		if [ "$nvmrc_node_version" = "N/A" ]; then
+			nvm install
+		elif [ "$nvmrc_node_version" != "$node_version" ]; then
+			nvm use >/dev/null
+		fi
+	elif [ "$node_version" != "$(nvm version default)" ]; then
+		nvm use default >/dev/null
+	fi
+}
+
 # Source: https://github.com/romkatv/powerlevel10k/issues/663
 function redraw-prompt () {
 	emulate -L zsh
@@ -349,6 +368,7 @@ function cd-up () {
 }
 
 function dotenv() {
+	local confirmation
 	if [ ! -f ".env" ]; then
 		return
 	fi
@@ -384,6 +404,7 @@ zle -N cd-forward
 #
 
 add-zsh-hook chpwd dotenv
+add-zsh-hook chpwd load-nvmrc
 
 #
 # CLI tools load
@@ -431,9 +452,6 @@ __plugin_loader zsh-autosuggestions/zsh-autosuggestions.zsh
 if where fzf >/dev/null; then
 	__plugin_loader fzf-tab/fzf-tab.plugin.zsh 2>/dev/null || true
 fi
-
-# Node Version Manager
-__plugin_loader zsh-load-nvmrc/load-nvmrc.zsh || true
 
 # Syntax highlighting
 __plugin_loader fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ||
@@ -552,5 +570,6 @@ compinit -d "$HOME/.cache/zsh/compdump"
 # Use cod (completion daemon) if it is available in the system
 where cod >/dev/null && source <(cod init $$ zsh) || true
 
-# Source dotenv
+# Source dotenv and load-nvmrc
 dotenv
+load-nvmrc

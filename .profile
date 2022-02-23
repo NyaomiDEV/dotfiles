@@ -6,4 +6,6 @@ if which yarn >/dev/null; then
 	export PATH="$(yarn global bin):$PATH"
 fi
 
-export VDPAU_DRIVER=va_gl
+if [ $(uname) = "Linux" ]; then
+	export VDPAU_DRIVER=va_gl
+fi
