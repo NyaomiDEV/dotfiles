@@ -1,5 +1,7 @@
 # Naomi's Dotfiles
 
+Now Mac-ready!
+
 I will be documenting the only relevant bits of my dotfiles in the README.
 
 # `.zshrc`
