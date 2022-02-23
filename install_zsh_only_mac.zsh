@@ -1,8 +1,8 @@
-#!/bin/sh
- 
+#!/bin/zsh
+
 echo "Naomi's Zshrc! (macOS and other Linux distros installer)"
 
-packages="zsh-abbr zsh-autosuggestions zsh-history-substring-search zsh-fast-syntax-highlighting fzf-tab su-zsh-plugin"
+packages=(zsh-abbr zsh-autosuggestions zsh-history-substring-search zsh-fast-syntax-highlighting fzf-tab su-zsh-plugin)
 
 typeset -A sources
 sources[zsh-abbr]="https://github.com/olets/zsh-abbr.git"
@@ -14,20 +14,17 @@ sources[su-zsh-plugin]="https://github.com/NyaomiDEV/su-zsh-plugin.git"
 
 mkdir -p $HOME/.zsh/plugins 2>/dev/null
 for package in $packages; do
-	[ ! -d "$HOME/.zsh/plugins/$package" ] && git clone "${sources[$package]}" "$HOME/.zsh/plugins/$package"
+	[ ! -d "$HOME/.zsh/plugins/$package" ] && git clone "${sources[${package}]}" "$HOME/.zsh/plugins/$package"
 done
 
 a="/$0"; a=${a%/*}; a=${a#/}; a=${a:-.}; BASEDIR=$(cd "$a"; pwd -P)
 
-files=$(find "$BASEDIR" -type f \
+files=($(find "$BASEDIR" -type f \
 	-name ".zshrc" -or \
 	-name ".profile" -or \
 	-name ".zprofile" -or \
 	-name "aliasrc" -or \
-	-name "shortcutrc")
-
-oldIFS=$IFS
-IFS=$'\n'
+	-name "shortcutrc"))
 
 for file in $files; do
 	echo "---"
@@ -51,5 +48,3 @@ for file in $files; do
 	fi
 	ln -s "$file" "$HOME/$relative" 2>/dev/null
 done
-
-IFS=$oldIFS
