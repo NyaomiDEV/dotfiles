@@ -9,3 +9,5 @@ fi
 if [ $(uname) = "Linux" ]; then
 	export VDPAU_DRIVER=va_gl
 fi
+
+export EDITOR=nano

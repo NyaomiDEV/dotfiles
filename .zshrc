@@ -11,11 +11,13 @@
 # Aliases
 #
 
-# Alias ls utils to show color
-alias ls='ls --color=auto'
-alias grep='grep --colour=auto'
-alias egrep='egrep --colour=auto'
-alias fgrep='fgrep --colour=auto'
+# Alias some coreutils to show color
+if [ "$(uname)" = "Linux" ]; then
+	alias ls='ls --color=auto'
+	alias grep='grep --colour=auto'
+	alias egrep='egrep --colour=auto'
+	alias fgrep='fgrep --colour=auto'
+fi
 
 # If bat is present, alias cat to use bat -pp
 where bat >/dev/null && alias cat="bat -pp" || true
