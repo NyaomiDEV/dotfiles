@@ -457,6 +457,7 @@ fi
 
 # Syntax highlighting
 __plugin_loader fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ||
+	__plugin_loader zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ||
 	__plugin_loader zsh-syntax-highlighting/zsh-syntax-highlighting.zsh || true
 
 # Su by pressing double ESC
