@@ -6,8 +6,14 @@ if which yarn >/dev/null; then
 	export PATH="$(yarn global bin):$PATH"
 fi
 
-if [ $(uname) = "Linux" ]; then
-	export VDPAU_DRIVER=va_gl
-fi
+_platform=$(uname)
+case $_platform in
+	Linux)
+		export VDPAU_DRIVER=va_gl
+		;;
+	Darwin)
+		export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.1.0/bin:$PATH"
+		;;
+esac
 
 export EDITOR=nano

@@ -195,6 +195,9 @@ _comp_options+=(globdots) # Include hidden files
 # Directory stack
 DIRSTACKSIZE=10
 
+# Fpath (completions)
+[ -d /usr/local/share/zsh-completions ] && fpath=(/usr/local/share/zsh-completions $fpath) || true
+
 # History
 HISTSIZE=10000
 SAVEHIST=10000
