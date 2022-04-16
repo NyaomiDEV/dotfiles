@@ -6,6 +6,10 @@ if which yarn >/dev/null; then
 	export PATH="$(yarn global bin):$PATH"
 fi
 
+if [ -f "$HOME/.cargo/env" ]; then
+	source $HOME/.cargo/env
+fi
+
 _platform=$(uname)
 case $_platform in
 	Linux)
