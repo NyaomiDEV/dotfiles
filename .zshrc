@@ -418,7 +418,7 @@ add-zsh-hook chpwd load-nvmrc
 # Fzf
 if where fzf >/dev/null; then
 	fzf_location=$(whence -S fzf)
-	fzf_location=${fzf_location%/*}
+	fzf_location=${${fzf_location%/*}%/*}
 	if [ -d "$fzf_location/shell" ]; then # We are inside a brew package
 		source $fzf_location/shell/completion.zsh 2>/dev/null
 		source $fzf_location/shell/key-bindings.zsh 2>/dev/null
@@ -492,8 +492,8 @@ bindkey '^[[A' history-substring-search-up					# Up
 bindkey '^[[B' history-substring-search-down				# Down
 
 # Incremental search
-bindkey "^R" history-incremental-search-backward			# Ctrl+R
-bindkey "^S" history-incremental-search-forward				# Ctrl+S
+#bindkey "^R" history-incremental-search-backward			# Ctrl+R
+#bindkey "^S" history-incremental-search-forward				# Ctrl+S
 
 # Line navigation
 bindkey '^[[H' beginning-of-line							# Home
