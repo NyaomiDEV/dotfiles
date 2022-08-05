@@ -1,0 +1,5 @@
+type = process
+command = /usr/bin/sunshine sunshine.conf
+working-dir = /home/naomi/.config/sunshine
+restart = true
+smooth-recovery = true
