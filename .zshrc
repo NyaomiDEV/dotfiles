@@ -579,3 +579,7 @@ where cod >/dev/null && source <(cod init $$ zsh) || true
 # Source dotenv and load-nvmrc
 dotenv
 load-nvmrc
+
+# iTerm2 shell extensions
+[ -e "${HOME}/.iterm2_shell_integration.zsh" ] && source "${HOME}/.iterm2_shell_integration.zsh" || true
+
