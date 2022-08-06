@@ -16,4 +16,4 @@ which wal-discord && wal-discord || true
 #done
 
 # accent color cycle
-qdbus org.kde.plasmashell.accentColor /AccentColor org.kde.plasmashell.accentColor.setAccentColor $( qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.color )
+sleep 2 && qdbus org.kde.plasmashell.accentColor /AccentColor org.kde.plasmashell.accentColor.setAccentColor $( qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.color )
