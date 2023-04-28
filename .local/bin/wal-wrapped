@@ -14,3 +14,6 @@ which wal-discord && wal-discord || true
 #for session in $(qdbus org.kde.konsole 2>/dev/null | grep /Sessions/ || true); do
 #	qdbus org.kde.konsole $session org.kde.konsole.Session.setProfile Konsole
 #done
+
+# accent color cycle
+sleep 2 && qdbus org.kde.plasmashell.accentColor /AccentColor org.kde.plasmashell.accentColor.setAccentColor $( qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.color )
