@@ -10,6 +10,11 @@ if [ -f "$HOME/.cargo/env" ]; then
 	source $HOME/.cargo/env
 fi
 
+if [ -d "$HOME/.deno" ]; then
+ 	export DENO_INSTALL="$HOME/.deno"
+	export PATH="$DENO_INSTALL/bin:$PATH"
+fi
+
 _platform=$(uname)
 case $_platform in
 	Linux)
@@ -19,7 +24,7 @@ case $_platform in
 		fi
 		;;
 	Darwin)
-		export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.1.0/bin:$PATH"
+		export PATH="/opt/local/bin:/opt/local/sbin:/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.1.0/bin:$PATH"
 		;;
 esac
 
