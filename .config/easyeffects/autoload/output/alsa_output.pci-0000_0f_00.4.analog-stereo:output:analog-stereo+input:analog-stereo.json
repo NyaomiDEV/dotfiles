@@ -1,5 +1,0 @@
-{
-    "device": "alsa_output.pci-0000_0f_00.4.analog-stereo",
-    "device-profile": "output:analog-stereo+input:analog-stereo",
-    "preset-name": "AKG K240 Studio ParametricEQ gras"
-}

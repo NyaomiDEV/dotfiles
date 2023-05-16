@@ -9,7 +9,7 @@ fi
 
 echo "Naomi's Dotfiles!"
 
-packages="pywal-git git zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-fast-syntax-highlighting"
+packages="git zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-fast-syntax-highlighting"
 optional_packages="cod fzf bat ttf-nerd-fonts-symbols"
 
 git_packages="fzf-tab su-zsh-plugin"
@@ -98,15 +98,5 @@ while
 do :; done
 
 echo "[!] Doing the extra work now"
-
-echo "[+] (future) Color schemes linkage"
-echo "[!] Those links may not be solvable right away so please set a wallpaper with wal"
-mkdir -p $HOME/.local/share/color-schemes 2>/dev/null
-ln -fs $HOME/.cache/wal/colors-kde.colors $HOME/.local/share/color-schemes/colors-kde.colors
-
-mkdir -p $HOME/.local/share/konsole 2>/dev/null
-ln -fs $HOME/.cache/wal/colors-konsole.colorscheme $HOME/.local/share/konsole/colors-konsole.colorscheme
-ln -fs $HOME/.cache/wal/colors-konsole-blurry.colorscheme $HOME/.local/share/konsole/colors-konsole-blurry.colorscheme
-ln -fs $HOME/.cache/wal/colors-konsole-blurry-alt.colorscheme $HOME/.local/share/konsole/colors-konsole-blurry-alt.colorscheme
 
 echo "[!] All done!"
