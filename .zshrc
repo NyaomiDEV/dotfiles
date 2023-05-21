@@ -426,11 +426,14 @@ if where fzf >/dev/null; then
 		source $fzf_location/share/fzf/completion.zsh 2>/dev/null
 		source $fzf_location/share/fzf/key-bindings.zsh 2>/dev/null
 	fi
+
+	# Catppuccin Mocha
+	export FZF_DEFAULT_OPTS="--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
 fi
 
 # Node Version Manager
-[ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
-source $NVM_DIR/nvm.sh
+[ -d "$HOME/.nvm" ] && [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
+[ -n "$NVM_DIR" ] && source $NVM_DIR/nvm.sh
 
 #
 # Plugin loads (custom order)
