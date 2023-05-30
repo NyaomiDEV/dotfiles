@@ -3,4 +3,5 @@ if [ "$(uname)" = "Linux" ]; then
 	alias yay=paru
 fi
 
-alias btw=neofetch
+alias btw=fastfetch
+alias openports="lsof -nPi"
