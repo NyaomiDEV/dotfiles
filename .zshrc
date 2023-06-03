@@ -19,6 +19,8 @@ if [ "$(uname)" = "Linux" ]; then
 	alias fgrep='fgrep --colour=auto'
 fi
 
+where exa >/dev/null && alias ls="exa --color=auto --group --classify --icons --git --group-directories-first --header"
+
 # If bat is present, alias cat to use bat -pp
 where bat >/dev/null && alias cat="bat -pp" || true
 
