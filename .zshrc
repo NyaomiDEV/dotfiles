@@ -419,7 +419,7 @@ add-zsh-hook chpwd load-nvmrc
 
 # Fzf
 if where fzf >/dev/null; then
-	fzf_location=$(realpath "$(where fzf)")
+	fzf_location=$(realpath "$(whence fzf)")
 	fzf_location=${${fzf_location%/*}%/*}
 	if [ -d "$fzf_location/shell" ]; then # We are inside a brew package
 		source $fzf_location/shell/completion.zsh 2>/dev/null
