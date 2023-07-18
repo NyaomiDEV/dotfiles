@@ -419,7 +419,7 @@ add-zsh-hook chpwd load-nvmrc
 
 # Fzf
 if where fzf >/dev/null; then
-	fzf_location=$(whence -S fzf)
+	fzf_location=$(realpath "$(where fzf)")
 	fzf_location=${${fzf_location%/*}%/*}
 	if [ -d "$fzf_location/shell" ]; then # We are inside a brew package
 		source $fzf_location/shell/completion.zsh 2>/dev/null
@@ -430,7 +430,9 @@ if where fzf >/dev/null; then
 	fi
 
 	# Catppuccin Mocha
-	export FZF_DEFAULT_OPTS="--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
+	if [ $HOST = "naomi-pc" ]; then
+		export FZF_DEFAULT_OPTS="--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
+	fi
 fi
 
 # Node Version Manager
