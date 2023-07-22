@@ -539,7 +539,7 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} ma=${SELECTED_ITEM_MENULIS
 zstyle ':completion:*' verbose yes
 
 # Content preview (fzf-tab)
-zstyle ':fzf-tab:complete:*:*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:(\\|*/|)(cd|ls|exa):*' fzf-preview 'exa -1 --color=always $realpath'
 
 # Fault tolerance (1 error on 3 characters)
 zstyle ':completion:*' completer _complete _correct _approximate
