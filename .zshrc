@@ -145,12 +145,6 @@ HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
 # Selected item in menu list color
 SELECTED_ITEM_MENULIST_COLOR="1;30;47"
 
-# Su command
-if [ -f ~/.zsh/su-zsh-plugin/su.plugin.zsh ]; then
-	where doas >/dev/null && SU_COMMAND=doas ||
-	where sudo >/dev/null && SU_COMMAND=sudo
-fi
-
 #
 # Options
 #
@@ -455,6 +449,13 @@ function __plugin_loader(){
 	fi
 }
 
+function __plugin_exists(){
+	if [ -f "$HOME/.zsh/plugins/$1" ] || [ -f "/usr/local/share/zsh/plugins/$1" ] || [ -f "/usr/share/zsh/plugins/$1" ]; then
+		return 0
+	fi
+	return 1
+}
+
 # Abbreviations
 __plugin_loader zsh-abbr/zsh-abbr.plugin.zsh
 
@@ -577,6 +578,11 @@ zstyle ':autocomplete:tab:*' widget-style menu-complete
 #
 # Stuff that needs to be run when ZSH starts
 #
+
+# Determine SU command
+if __plugin_exists su-zsh-plugin/su.plugin.zsh; then
+	SU_COMMAND=$((where doas >/dev/null && echo doas) || (where sudo >/dev/null && echo sudo))
+fi
 
 # Initialize completion
 compinit -d "$HOME/.cache/zsh/compdump"
