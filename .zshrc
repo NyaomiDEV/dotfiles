@@ -198,6 +198,7 @@ _comp_options+=(globdots) # Include hidden files
 DIRSTACKSIZE=10
 
 # Fpath (completions)
+[ -d /opt/homebrew/share/zsh-completions ] && fpath=(/opt/homebrew/share/zsh-completions $fpath) || true
 [ -d /usr/local/share/zsh-completions ] && fpath=(/usr/local/share/zsh-completions $fpath) || true
 
 # History
