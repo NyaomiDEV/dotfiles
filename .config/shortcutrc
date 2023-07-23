@@ -28,7 +28,7 @@ fi
 
 function dotupdate() {
 	local curdir=$(pwd)
-	cd $(dirname $(realpath .zshrc))
+	cd $(dirname $(realpath $HOME/.zshrc))
 	git add .
 	git commit -m "Update dotfiles"
 	git push
@@ -37,7 +37,7 @@ function dotupdate() {
 
 function dotpull() {
 	local curdir=$(pwd)
-	cd $(dirname $(realpath .zshrc))
+	cd $(dirname $(realpath $HOME/.zshrc))
 	git pull
 	cd $curdir
 }
