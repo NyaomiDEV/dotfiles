@@ -24,6 +24,9 @@ where eza >/dev/null && alias ls="eza --color=auto --group --classify --icons --
 # If bat is present, alias cat to use bat -pp
 where bat >/dev/null && alias cat="bat -pp" || true
 
+# On Arch Linux, helix is called 'helix' and not 'hx'. Provide an alias to that
+where helix >/dev/null && alias hx=helix || true
+
 # Load aliases and shortcuts if existent
 [ -f "$HOME/.config/shortcutrc" ] && source "$HOME/.config/shortcutrc"
 [ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
