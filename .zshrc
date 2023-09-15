@@ -19,7 +19,7 @@ if [ "$(uname)" = "Linux" ]; then
 	alias fgrep='fgrep --colour=auto'
 fi
 
-where exa >/dev/null && alias ls="exa --color=auto --group --classify --icons --git --group-directories-first --header"
+where eza >/dev/null && alias ls="eza --color=auto --group --classify --icons --git --group-directories-first --header"
 
 # If bat is present, alias cat to use bat -pp
 where bat >/dev/null && alias cat="bat -pp" || true
@@ -541,7 +541,7 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} ma=${SELECTED_ITEM_MENULIS
 zstyle ':completion:*' verbose yes
 
 # Content preview (fzf-tab)
-zstyle ':fzf-tab:complete:(\\|*/|)(cd|ls|exa):*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:(\\|*/|)(cd|ls|eza):*' fzf-preview 'eza -1 --color=always $realpath'
 
 # Fault tolerance (1 error on 3 characters)
 zstyle ':completion:*' completer _complete _correct _approximate
