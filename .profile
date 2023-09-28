@@ -15,12 +15,6 @@ if [ -d "$HOME/.deno" ]; then
 	export PATH="$DENO_INSTALL/bin:$PATH"
 fi
 
-if [ "$(arch)" = "arm64" ] && [ -d "/opt/homebrew" ]; then
-	eval "$(/opt/homebrew/bin/brew shellenv)"
-elif which brew >/dev/null; then
-	eval "$(brew shellenv)"
-fi
-
 _platform=$(uname)
 case $_platform in
 	Linux)

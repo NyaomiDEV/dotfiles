@@ -7,6 +7,13 @@
 
 [ -d "$HOME/.cache/zsh" ] || mkdir -p "$HOME/.cache/zsh"
 
+# Brew
+if [ "$(arch)" = "arm64" ] && [ -d "/opt/homebrew" ]; then
+	eval "$(/opt/homebrew/bin/brew shellenv)"
+else
+	eval "$(/usr/local/bin/brew shellenv)"
+fi
+
 #
 # Aliases
 #
@@ -599,4 +606,3 @@ load-nvmrc
 
 # iTerm2 shell extensions
 [ -e "${HOME}/.iterm2_shell_integration.zsh" ] && source "${HOME}/.iterm2_shell_integration.zsh" || true
-
