@@ -8,10 +8,12 @@
 [ -d "$HOME/.cache/zsh" ] || mkdir -p "$HOME/.cache/zsh"
 
 # Brew
-if [ "$(arch)" = "arm64" ] && [ -d "/opt/homebrew" ]; then
-	eval "$(/opt/homebrew/bin/brew shellenv)"
-else
-	eval "$(/usr/local/bin/brew shellenv)"
+if where arch >/dev/null; then
+	if [ "$(arch)" = "arm64" ] && [ -d "/opt/homebrew" ]; then
+		eval "$(/opt/homebrew/bin/brew shellenv)"
+	else
+		eval "$(/usr/local/bin/brew shellenv)"
+	fi
 fi
 
 #

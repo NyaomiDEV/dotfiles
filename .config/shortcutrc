@@ -54,7 +54,7 @@ function ts-init() {
 		1="."
 	fi
 
-	git clone --depth=1 https://github.com/NyaomiDEV/naomi-ts-template "$1" && rm -rf "$1/.git" && yarn
+	git clone --depth=1 https://github.com/NyaomiDEV/naomi-ts-template "$1" && rm -rf "$1/.git" && cd "$1" && yarn
 }
 
 function transfer() {
