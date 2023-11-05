@@ -251,7 +251,7 @@ atuin-setup() {
 		if [[ -n $ZSH_AUTOSUGGEST_HISTORY_IGNORE ]]; then
 			pattern="($pattern)~($ZSH_AUTOSUGGEST_HISTORY_IGNORE)"
 		fi
-		typeset -g suggestion="${history_atuin[(R)$pattern]}"
+		typeset -g suggestion="$(atuin search --cmd-only --search-mode=prefix --limit=1 -- $pattern)"
 	}
 
 	_atuin_beginning-of-history() {
