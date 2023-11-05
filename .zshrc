@@ -194,7 +194,7 @@ setopt promptsubst
 
 # Autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#808080"
-ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd history completion)
+ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd atuin history completion)
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 
 # Completion
@@ -236,6 +236,77 @@ PS1=${(j::)segments}
 #
 # Functions
 #
+
+atuin-setup() {
+    if ! which atuin &> /dev/null; then
+		return 1;
+	fi
+
+    eval "$(ATUIN_NOBIND="true" atuin init zsh)"
+
+	_zsh_autosuggest_strategy_atuin() {
+		setopt EXTENDED_GLOB
+		local prefix="${1//(#m)[\\*?[\]<>()|^~#]/\\$MATCH}"
+		local pattern="$prefix*"
+		if [[ -n $ZSH_AUTOSUGGEST_HISTORY_IGNORE ]]; then
+			pattern="($pattern)~($ZSH_AUTOSUGGEST_HISTORY_IGNORE)"
+		fi
+		typeset -g suggestion="${history_atuin[(R)$pattern]}"
+	}
+
+	_atuin_beginning-of-history() {
+		local selected=$(atuin history list --cmd-only | head -n 1)
+		local ret=$?
+		if [ -n "$selected" ]; then
+			LBUFFER="${selected}"
+		fi
+		zle reset-prompt
+		return $ret
+	}
+
+	_atuin_end-of-history() {
+		local selected=$(atuin history list --cmd-only | tail -n 1)
+		local ret=$?
+		if [ -n "$selected" ]; then
+			LBUFFER="${selected}"
+		fi
+		zle reset-prompt
+		return $ret
+	}
+
+	zle -N _atuin_beginning-of-history
+	zle -N _atuin_end-of-history
+	zle -N _atuin_search
+	zle -N _atuin_up_search
+
+	if which fzf &> /dev/null; then
+		_fzf-atuin-history-widget() {
+			setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2>/dev/null
+
+			local atuin_opts="--cmd-only -r false --print0"
+			local fzf_opts=(
+				--read0
+				--height=${FZF_TMUX_HEIGHT:-40%}
+				"-n2..,.."
+				--scheme=history
+				"--query=${LBUFFER}"
+				"+m"
+				"--bind=ctrl-r:toggle-sort,ctrl-z:ignore"
+			)
+
+			local selected=$(
+				eval "atuin history list ${atuin_opts}" | fzf "${fzf_opts[@]}"
+			)
+			local ret=$?
+			if [ -n "$selected" ]; then
+				LBUFFER="${selected}"
+			fi
+			zle reset-prompt
+			return $ret
+		}
+		zle -N _fzf-atuin-history-widget
+	fi
+}
 
 # Source: https://github.com/agkozak/agkozak-zsh-prompt/
 function git-status () {
@@ -429,10 +500,8 @@ if where fzf >/dev/null; then
 	fzf_location=$(realpath "$(whence fzf)")
 	fzf_location=${${fzf_location%/*}%/*}
 	if [ -d "$fzf_location/shell" ]; then # We are inside a brew package
-		source $fzf_location/shell/completion.zsh 2>/dev/null
 		source $fzf_location/shell/key-bindings.zsh 2>/dev/null
 	elif [ -d "$fzf_location/share/fzf" ]; then # We are inside /usr or /usr/local
-		source $fzf_location/share/fzf/completion.zsh 2>/dev/null
 		source $fzf_location/share/fzf/key-bindings.zsh 2>/dev/null
 	fi
 
@@ -507,14 +576,26 @@ bindkey '^[[1;3C' cd-forward								# Alt+Right
 bindkey '^[[1;3A' cd-up										# Alt+Up
 
 # History navigation
-bindkey "${terminfo[kpp]}" beginning-of-history				# PgUp
-bindkey "${terminfo[knp]}" end-of-history					# PgDn
-bindkey '^[[A' history-substring-search-up					# Up
-bindkey '^[[B' history-substring-search-down				# Down
+if which atuin &> /dev/null; then
+	bindkey "${terminfo[kpp]}" _atuin_beginning-of-history	# PgUp
+	bindkey "${terminfo[knp]}" _atuin_end-of-history		# PgDn
+	bindkey '^[[A' _atuin_up_search							# Up
+else
+	bindkey "${terminfo[kpp]}" beginning-of-history			# PgUp
+	bindkey "${terminfo[knp]}" end-of-history				# PgDn
+	bindkey '^[[A' history-substring-search-up				# Up
+	bindkey '^[[B' history-substring-search-down			# Down
+fi
 
-# Incremental search
-#bindkey "^R" history-incremental-search-backward			# Ctrl+R
-#bindkey "^S" history-incremental-search-forward				# Ctrl+S
+# History with Atuin/FZF
+if which fzf &> /dev/null; then
+	if which atuin &> /dev/null; then
+		bindkey -M emacs '^R' _fzf-atuin-history-widget		# Ctrl+R
+		bindkey -M vicmd '^R' _fzf-atuin-history-widget
+		bindkey -M viins '^R' _fzf-atuin-history-widget
+	fi
+	# It falls back to FZF's keybinds eventually
+fi
 
 # Line navigation
 bindkey '^[[H' beginning-of-line							# Home
@@ -590,6 +671,8 @@ zstyle ':autocomplete:tab:*' widget-style menu-complete
 #
 # Stuff that needs to be run when ZSH starts
 #
+
+atuin-setup
 
 # Determine SU command
 if __plugin_exists su-zsh-plugin/su.plugin.zsh; then
