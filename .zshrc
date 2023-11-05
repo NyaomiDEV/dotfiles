@@ -265,7 +265,7 @@ atuin-setup() {
 	}
 
 	_atuin_end-of-history() {
-		local selected=$(atuin history list --cmd-only | tail -n 1)
+		local selected=$(atuin history last --cmd-only)
 		local ret=$?
 		if [ -n "$selected" ]; then
 			LBUFFER="${selected}"
@@ -281,9 +281,6 @@ atuin-setup() {
 
 	if which fzf &> /dev/null; then
 		_fzf-atuin-history-widget() {
-			setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2>/dev/null
-
-			local atuin_opts="--cmd-only -r false --print0"
 			local fzf_opts=(
 				--read0
 				--height=${FZF_TMUX_HEIGHT:-40%}
@@ -291,19 +288,22 @@ atuin-setup() {
 				--scheme=history
 				"--query=${LBUFFER}"
 				"+m"
-				"--bind=ctrl-r:toggle-sort,ctrl-z:ignore"
+				"--bind=ctrl-r:toggle-sort,ctrl-z:ignore,?:toggle-preview"
+				"--preview=echo {}"
+				"--preview-window=down:3:hidden:wrap"
 			)
 
-			local selected=$(
-				eval "atuin history list ${atuin_opts}" | fzf "${fzf_opts[@]}"
-			)
+			local selected=$(atuin history list --cmd-only -r false --print0 | fzf "${fzf_opts[@]}")
 			local ret=$?
+
 			if [ -n "$selected" ]; then
 				LBUFFER="${selected}"
 			fi
+
 			zle reset-prompt
 			return $ret
 		}
+
 		zle -N _fzf-atuin-history-widget
 	fi
 }
