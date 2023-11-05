@@ -556,8 +556,10 @@ __plugin_loader fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ||
 # Su by pressing double ESC
 __plugin_loader su-zsh-plugin/su.plugin.zsh || true
 
-# History substring search
-__plugin_loader zsh-history-substring-search/zsh-history-substring-search.zsh
+# History substring search (useless if Atuin is there)
+if ! where atuin &> /dev/null; then
+	__plugin_loader zsh-history-substring-search/zsh-history-substring-search.zsh
+fi
 
 #
 # Keybinds
