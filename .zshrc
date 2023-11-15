@@ -244,6 +244,107 @@ atuin-setup() {
 
     eval "$(ATUIN_NOBIND="true" atuin init zsh)"
 
+	# internal variables
+	typeset -g -i _atuin_history_match_index
+	typeset -g _atuin_history_search_result
+	typeset -g _atuin_history_search_query
+	typeset -g _atuin_history_refresh_display
+
+	_atuin-history-search-begin() {
+		_atuin_history_refresh_display=
+
+		if [[ -n $LBUFFER && $LBUFFER == ${_atuin_history_search_result:-} ]]; then
+			return;
+		fi
+		_atuin_history_search_result=''
+
+		if [[ -z $LBUFFER ]]; then
+			_atuin_history_search_query=
+		else
+			_atuin_history_search_query="$LBUFFER"
+		fi
+
+		_atuin_history_match_index=0
+	}
+
+	_atuin-history-search-end() {
+		if [[ $_atuin_history_match_index -le 0 ]]; then
+			_atuin_history_search_result="$_atuin_history_search_query"
+		fi
+
+		if [[ $_atuin_history_refresh_display -eq 1 ]]; then
+			zle reset-prompt
+			_zsh_autosuggest_clear
+			BUFFER="$_atuin_history_search_result"
+			CURSOR="${#BUFFER}"
+			_zsh_highlight
+		fi
+	}
+
+	_atuin-history-up-buffer() {
+		local buflines XLBUFFER xlbuflines
+		buflines=(${(f)BUFFER})
+		XLBUFFER=$LBUFFER"x"
+		xlbuflines=(${(f)XLBUFFER})
+
+		if [[ $#buflines -gt 1 && $CURSOR -ne $#BUFFER && $#xlbuflines -ne 1 ]]; then
+			zle up-line-or-history
+			return 0
+		fi
+
+		return 1
+	}
+
+	_atuin-history-down-buffer() {
+		local buflines XRBUFFER xrbuflines
+		buflines=(${(f)BUFFER})
+		XRBUFFER="x"$RBUFFER
+		xrbuflines=(${(f)XRBUFFER})
+
+		if [[ $#buflines -gt 1 && $CURSOR -ne $#BUFFER && $#xrbuflines -ne 1 ]]; then
+			zle down-line-or-history
+			return 0
+		fi
+
+		return 1
+	}
+
+	_atuin-history-up-search() {
+		_atuin_history_match_index+=1
+
+		offset=$((_atuin_history_match_index-1))
+		search_result=$(_atuin-history-do-search $offset "$_atuin_history_search_query")
+
+		if [[ -z $search_result ]]; then
+			_atuin_history_match_index+=-1
+			return 1
+		fi
+
+		_atuin_history_refresh_display=1
+		_atuin_history_search_result="$search_result"
+		return 0
+	}
+
+	_atuin-history-down-search() {
+		if [[ $_atuin_history_match_index -le 0 ]]; then
+			return 1
+		fi
+
+		_atuin_history_refresh_display=1
+		_atuin_history_match_index+=-1
+
+		offset=$((_atuin_history_match_index-1))
+		_atuin_history_search_result=$(_atuin-history-do-search $offset "$_atuin_history_search_query")
+
+		return 0
+	}
+
+	_atuin-history-do-search() {
+		if [[ $1 -ge 0 ]]; then
+			atuin search --filter-mode "host" --search-mode prefix --limit 1 --offset $1 --format "{command}" "$2"
+		fi
+	}
+
 	_zsh_autosuggest_strategy_atuin() {
 		setopt EXTENDED_GLOB
 		local prefix="${1//(#m)[\\*?[\]<>()|^~#]/\\$MATCH}"
@@ -274,8 +375,26 @@ atuin-setup() {
 		return $ret
 	}
 
+	_atuin_history-substring-search-up() {
+		_atuin-history-search-begin
+
+		_atuin-history-up-buffer || _atuin-history-up-search
+
+		_atuin-history-search-end
+	}
+
+	_atuin_history-substring-search-down() {
+		_atuin-history-search-begin
+
+		_atuin-history-down-buffer || _atuin-history-down-search || zle _atuin_search_widget
+
+		_atuin-history-search-end
+	}
+
 	zle -N _atuin_beginning-of-history
 	zle -N _atuin_end-of-history
+	zle -N _atuin_history-substring-search-up
+	zle -N _atuin_history-substring-search-down
 	zle -N _atuin_search
 	zle -N _atuin_up_search
 
@@ -581,7 +700,8 @@ bindkey '^[[1;3A' cd-up										# Alt+Up
 if which atuin &> /dev/null; then
 	bindkey "${terminfo[kpp]}" _atuin_beginning-of-history	# PgUp
 	bindkey "${terminfo[knp]}" _atuin_end-of-history		# PgDn
-	bindkey '^[[A' _atuin_up_search							# Up
+	bindkey '^[[A' _atuin_history-substring-search-up		# Up
+	bindkey '^[[B' _atuin_history-substring-search-down		# Down
 else
 	bindkey "${terminfo[kpp]}" beginning-of-history			# PgUp
 	bindkey "${terminfo[knp]}" end-of-history				# PgDn
