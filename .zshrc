@@ -359,6 +359,7 @@ atuin-setup() {
 		local ret=$?
 		if [ -n "$selected" ]; then
 			BUFFER="${selected}"
+			CURSOR="${#BUFFER}"
 			zle reset-prompt
 		fi
 		return $ret
@@ -369,6 +370,7 @@ atuin-setup() {
 		local ret=$?
 		if [ -n "$selected" ]; then
 			BUFFER="${selected}"
+			CURSOR="${#BUFFER}"
 			zle reset-prompt
 		fi
 		return $ret
@@ -416,6 +418,7 @@ atuin-setup() {
 
 			if [ -n "$selected" ]; then
 				BUFFER="${selected}"
+				CURSOR="${#BUFFER}"
 			fi
 
 			zle reset-prompt
