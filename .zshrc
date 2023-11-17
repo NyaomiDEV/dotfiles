@@ -275,7 +275,7 @@ atuin-setup() {
 		if [[ $_atuin_history_refresh_display -eq 1 ]]; then
 			BUFFER="$_atuin_history_search_result"
 			CURSOR="${#BUFFER}"
-			POSTDISPLAY=
+			unset POSTDISPLAY
 			zle reset-prompt
 		fi
 	}
