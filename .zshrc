@@ -253,15 +253,15 @@ atuin-setup() {
 	_atuin-history-search-begin() {
 		_atuin_history_refresh_display=
 
-		if [[ -n $LBUFFER && $LBUFFER == ${_atuin_history_search_result:-} ]]; then
+		if [[ -n $BUFFER && $BUFFER == ${_atuin_history_search_result:-} ]]; then
 			return;
 		fi
 		_atuin_history_search_result=''
 
-		if [[ -z $LBUFFER ]]; then
+		if [[ -z $BUFFER ]]; then
 			_atuin_history_search_query=
 		else
-			_atuin_history_search_query="$LBUFFER"
+			_atuin_history_search_query="$BUFFER"
 		fi
 
 		_atuin_history_match_index=0
@@ -273,11 +273,10 @@ atuin-setup() {
 		fi
 
 		if [[ $_atuin_history_refresh_display -eq 1 ]]; then
-			zle reset-prompt
-			_zsh_autosuggest_clear
 			BUFFER="$_atuin_history_search_result"
 			CURSOR="${#BUFFER}"
-			_zsh_highlight
+			POSTDISPLAY=
+			zle reset-prompt
 		fi
 	}
 
@@ -359,9 +358,9 @@ atuin-setup() {
 		local selected=$(atuin history list --cmd-only | head -n 1)
 		local ret=$?
 		if [ -n "$selected" ]; then
-			LBUFFER="${selected}"
+			BUFFER="${selected}"
+			zle reset-prompt
 		fi
-		zle reset-prompt
 		return $ret
 	}
 
@@ -369,9 +368,9 @@ atuin-setup() {
 		local selected=$(atuin history last --cmd-only)
 		local ret=$?
 		if [ -n "$selected" ]; then
-			LBUFFER="${selected}"
+			BUFFER="${selected}"
+			zle reset-prompt
 		fi
-		zle reset-prompt
 		return $ret
 	}
 
@@ -405,7 +404,7 @@ atuin-setup() {
 				--height=${FZF_TMUX_HEIGHT:-40%}
 				"-n2..,.."
 				--scheme=history
-				"--query=${LBUFFER}"
+				"--query=${BUFFER}"
 				"+m"
 				"--bind=ctrl-r:toggle-sort,ctrl-z:ignore,?:toggle-preview"
 				"--preview=echo {}"
@@ -416,7 +415,7 @@ atuin-setup() {
 			local ret=$?
 
 			if [ -n "$selected" ]; then
-				LBUFFER="${selected}"
+				BUFFER="${selected}"
 			fi
 
 			zle reset-prompt
