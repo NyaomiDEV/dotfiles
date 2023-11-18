@@ -376,19 +376,20 @@ atuin-setup() {
 		return $ret
 	}
 
+	_atuin_search_widget() {
+		_atuin_search
+		zle reset-prompt
+	}
+
 	_atuin_history-substring-search-up() {
 		_atuin-history-search-begin
-
 		_atuin-history-up-buffer || _atuin-history-up-search
-
 		_atuin-history-search-end
 	}
 
 	_atuin_history-substring-search-down() {
 		_atuin-history-search-begin
-
 		_atuin-history-down-buffer || _atuin-history-down-search || zle _atuin_search_widget
-
 		_atuin-history-search-end
 	}
 
@@ -396,8 +397,7 @@ atuin-setup() {
 	zle -N _atuin_end-of-history
 	zle -N _atuin_history-substring-search-up
 	zle -N _atuin_history-substring-search-down
-	zle -N _atuin_search
-	zle -N _atuin_up_search
+	zle -N _atuin_search_widget
 
 	if which fzf &> /dev/null; then
 		_fzf-atuin-history-widget() {
