@@ -6,24 +6,7 @@ alias pavucontrol-opi="env PULSE_SERVER="192.168.1.4" pavucontrol-qt"
 
 
 if [ "$(uname)" = "Linux" ]; then 
-	alias usbfix="sudo pkill -9 usbmuxd; sudo rm /var/run/usbmuxd; sudo usbmuxd --user usbmux --udev"
-
-	function sunamu-lyricsid(){
-		echo -n "$(playerctl metadata xesam:artist):$(playerctl metadata xesam:album):$(playerctl metadata xesam:title)" | md5sum | cut -f1 -d" ";
-	}
-
-	function rmlyrics(){
-		id="$(sunamu-lyricsid)";
-		dir="${HOME}/.config/sunamu/Lyrics Cache/${id}.gz";
-		echo Removing "${dir}"
-		rm "${dir}"
-	}
-
-	function openlyrics(){
-		id="$(sunamu-lyricsid)";
-		dir="$HOME/.config/sunamu/Lyrics Cache/${id}.gz";
-		gzip -d - < "${dir}" | json5 | jq .
-	}
+	# B o h
 fi
 
 function dotupdate() {
@@ -80,16 +63,4 @@ function transfer() {
 		file_name=$1;
 		curl --progress-bar --upload-file "-" "https://transfer.sh/$file_name" | tee /dev/null;
 	fi;
-}
-
-function pw-restart() {
-	dinitctl stop easyeffects
-	dinitctl stop wireplumber
-	dinitctl stop pipewire-pulse
-	dinitctl stop pipewire
-
-	dinitctl start pipewire
-	dinitctl start pipewire-pulse
-	dinitctl start wireplumber
-	dinitctl start easyeffects
 }
