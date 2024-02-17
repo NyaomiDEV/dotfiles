@@ -809,6 +809,11 @@ compinit -d "$HOME/.cache/zsh/compdump"
 # Use cod (completion daemon) if it is available in the system
 where cod >/dev/null && source <(cod init $$ zsh) || true
 
+# Zoxide (with completions)
+if where zoxide >/dev/null; then
+	eval "$(zoxide init zsh --cmd cd)"
+fi
+
 # Source dotenv and load-nvmrc
 dotenv
 load-nvmrc
