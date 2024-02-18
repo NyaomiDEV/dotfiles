@@ -239,6 +239,7 @@ PS1=${(j::)segments}
 
 atuin-setup() {
     if ! which atuin &> /dev/null; then
+		[ -n "$DEBUG_ZSHRC" ] && echo "Atuin is not installed, using regular history instead."
 		return 1;
 	fi
 
@@ -630,6 +631,8 @@ if where fzf >/dev/null; then
 	if [ $HOST = "naomi-pc" ]; then
 		export FZF_DEFAULT_OPTS="--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
 	fi
+else
+	[ -n "$DEBUG_ZSHRC" ] && echo "Fzf is not installed. A lot of stuff won't work nicely!"
 fi
 
 # Node Version Manager
@@ -660,34 +663,34 @@ function __plugin_exists(){
 
 # Abbreviations
 __plugin_loader zsh-abbr/zsh-abbr.plugin.zsh ||
-	echo "Missing zsh-abbr plugin!"
+	([ -n "$DEBUG_ZSHRC" ] && echo "Missing zsh-abbr plugin!")
 
 # Autosuggestions
 __plugin_loader zsh-autosuggestions/zsh-autosuggestions.zsh ||
-	echo "Missing zsh-autosuggestions plugin!"
+	([ -n "$DEBUG_ZSHRC" ] && echo "Missing zsh-autosuggestions plugin!")
 
 # Fzf
 if where fzf >/dev/null; then
 	__plugin_loader fzf-tab-bin-git/fzf-tab.plugin.zsh ||
 		__plugin_loader fzf-tab-git/fzf-tab.plugin.zsh ||
 		__plugin_loader fzf-tab/fzf-tab.plugin.zsh ||
-		echo "Missing fzf-tab plugin!"
+		([ -n "$DEBUG_ZSHRC" ] && echo "Missing fzf-tab plugin!")
 fi
 
 # Syntax highlighting
 __plugin_loader fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ||
 	__plugin_loader zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ||
 	__plugin_loader zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ||
-	echo "Missing syntax highlighting plugin!"
+	([ -n "$DEBUG_ZSHRC" ] && echo "Missing syntax highlighting plugin!")
 
 # Su by pressing double ESC
 __plugin_loader su-zsh-plugin/su.plugin.zsh ||
-	echo "Missing su-zsh plugin!"
+	([ -n "$DEBUG_ZSHRC" ] && echo "Missing su-zsh plugin!")
 
 # History substring search (useless if Atuin is there)
 if ! where atuin &> /dev/null; then
 	__plugin_loader zsh-history-substring-search/zsh-history-substring-search.zsh ||
-		echo "Missing zsh-history-substring-search plugin!"
+		([ -n "$DEBUG_ZSHRC" ] && echo "Missing zsh-history-substring-search plugin!")
 fi
 
 #
@@ -820,6 +823,8 @@ where cod >/dev/null && source <(cod init $$ zsh) || true
 # Zoxide (with completions)
 if where zoxide >/dev/null; then
 	eval "$(zoxide init zsh --cmd cd)"
+else
+	[ -n "$DEBUG_ZSHRC" ] && echo "Zoxide is not installed. Using regular cd builtin."
 fi
 
 # Source dotenv and load-nvmrc
