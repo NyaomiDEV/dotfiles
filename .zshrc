@@ -8,7 +8,7 @@
 [ -d "$HOME/.cache/zsh" ] || mkdir -p "$HOME/.cache/zsh"
 
 # Brew
-if where arch >/dev/null; then
+if which arch >/dev/null; then
 	if [ "$(arch)" = "arm64" ] && [ -d "/opt/homebrew" ]; then
 		eval "$(/opt/homebrew/bin/brew shellenv)"
 	else
@@ -28,13 +28,13 @@ if [ "$(uname)" = "Linux" ]; then
 	alias fgrep='fgrep --colour=auto'
 fi
 
-where eza >/dev/null && alias ls="eza --color=auto --group --classify --icons --git --group-directories-first --header"
+which eza >/dev/null && alias ls="eza --color=auto --group --classify --icons --git --group-directories-first --header"
 
 # If bat is present, alias cat to use bat -pp
-where bat >/dev/null && alias cat="bat -pp" || true
+which bat >/dev/null && alias cat="bat -pp" || true
 
 # On Arch Linux, helix is called 'helix' and not 'hx'. Provide an alias to that
-where helix >/dev/null && alias hx=helix || true
+which helix >/dev/null && alias hx=helix || true
 
 # Load aliases and shortcuts if existent
 [ -f "$HOME/.config/shortcutrc" ] && source "$HOME/.config/shortcutrc"
@@ -68,7 +68,7 @@ zmodload zsh/zpty
 colors
 
 # Calculate and import dircolors
-if where dircolors >/dev/null; then
+if which dircolors >/dev/null; then
 	if [[ -f ~/.dir_colors ]]; then
 		eval $(dircolors -b ~/.dir_colors)
 	elif [[ -f /etc/DIR_COLORS ]]; then
@@ -427,6 +427,8 @@ atuin-setup() {
 		}
 
 		zle -N _fzf-atuin-history-widget
+	else
+		[ -n "$DEBUG_ZSHRC" ] && echo "Fzf is not installed, so we're not adding Atuin + FZF integration."
 	fi
 }
 
@@ -530,20 +532,26 @@ function redraw-prompt () {
 }
 
 # Source: https://github.com/phiresky/ripgrep-all
-if where rga >/dev/null; then
-	function rga-fzf() {
-		RG_PREFIX="rga --files-with-matches"
-		local file
-		file="$(
-			FZF_DEFAULT_COMMAND="$RG_PREFIX '$1'" \
-				fzf --sort --preview="[[ ! -z {} ]] && rga --pretty --context 5 {q} {}" \
-					--phony -q "$1" \
-					--bind "change:reload:$RG_PREFIX {q}" \
-					--preview-window="70%:wrap"
-		)" &&
-		echo "opening $file" &&
-		xdg-open "$file"
-	}
+if which rga >/dev/null; then
+	if which fzf >/dev/null; then
+		function rga-fzf() {
+			RG_PREFIX="rga --files-with-matches"
+			local file
+			file="$(
+				FZF_DEFAULT_COMMAND="$RG_PREFIX '$1'" \
+					fzf --sort --preview="[[ ! -z {} ]] && rga --pretty --context 5 {q} {}" \
+						--phony -q "$1" \
+						--bind "change:reload:$RG_PREFIX {q}" \
+						--preview-window="70%:wrap"
+			)" &&
+			echo "opening $file" &&
+			xdg-open "$file"
+		}
+	else
+		[ -n "$DEBUG_ZSHRC" ] && echo "Fzf is not installed, so we're not adding Rga + FZF integration."
+	fi
+else
+	[ -n "$DEBUG_ZSHRC" ] && echo "Rga is not installed, so we're not adding Rga + FZF integration."
 fi
 
 # Source: https://github.com/romkatv/powerlevel10k/issues/663
@@ -618,7 +626,7 @@ add-zsh-hook chpwd load-nvmrc
 #
 
 # Fzf
-if where fzf >/dev/null; then
+if which fzf >/dev/null; then
 	fzf_location=$(realpath "$(whence fzf)")
 	fzf_location=${${fzf_location%/*}%/*}
 	if [ -d "$fzf_location/shell" ]; then # We are inside a brew package
@@ -670,7 +678,7 @@ __plugin_loader zsh-autosuggestions/zsh-autosuggestions.zsh ||
 	([ -n "$DEBUG_ZSHRC" ] && echo "Missing zsh-autosuggestions plugin!")
 
 # Fzf
-if where fzf >/dev/null; then
+if which fzf >/dev/null; then
 	__plugin_loader fzf-tab-bin-git/fzf-tab.plugin.zsh ||
 		__plugin_loader fzf-tab-git/fzf-tab.plugin.zsh ||
 		__plugin_loader fzf-tab/fzf-tab.plugin.zsh ||
@@ -688,7 +696,7 @@ __plugin_loader su-zsh-plugin/su.plugin.zsh ||
 	([ -n "$DEBUG_ZSHRC" ] && echo "Missing su-zsh plugin!")
 
 # History substring search (useless if Atuin is there)
-if ! where atuin &> /dev/null; then
+if ! which atuin &> /dev/null; then
 	__plugin_loader zsh-history-substring-search/zsh-history-substring-search.zsh ||
 		([ -n "$DEBUG_ZSHRC" ] && echo "Missing zsh-history-substring-search plugin!")
 fi
@@ -811,17 +819,17 @@ atuin-setup
 
 # Determine SU command
 if __plugin_exists su-zsh-plugin/su.plugin.zsh; then
-	SU_COMMAND=$((where doas >/dev/null && echo doas) || (where sudo >/dev/null && echo sudo))
+	SU_COMMAND=$((which doas >/dev/null && echo doas) || (which sudo >/dev/null && echo sudo))
 fi
 
 # Initialize completion
 compinit -d "$HOME/.cache/zsh/compdump"
 
 # Use cod (completion daemon) if it is available in the system
-where cod >/dev/null && source <(cod init $$ zsh) || true
+which cod >/dev/null && source <(cod init $$ zsh) || true
 
 # Zoxide (with completions)
-if where zoxide >/dev/null; then
+if which zoxide >/dev/null; then
 	eval "$(zoxide init zsh --cmd cd)"
 else
 	[ -n "$DEBUG_ZSHRC" ] && echo "Zoxide is not installed. Using regular cd builtin."
