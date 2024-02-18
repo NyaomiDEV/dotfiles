@@ -10,26 +10,26 @@ if [ "$(uname)" = "Linux" ]; then
 fi
 
 function dotupdate() {
-	local curdir=$(pwd)
-	cd $(dirname $(realpath $HOME/.zshrc))
-	git add .
-	git commit -m "Update dotfiles"
-	git push
-	cd $curdir
+	(
+		cd "$(dirname "$(realpath $HOME/.zshrc)")"
+		git add .
+		git commit -m "Update dotfiles"
+		git push
+	)
 }
 
 function dotpull() {
-	local curdir=$(pwd)
-	cd $(dirname $(realpath $HOME/.zshrc))
-	git pull
-	cd $curdir
+	(
+		cd $(dirname $(realpath $HOME/.zshrc))
+		git pull
+	)
 }
 
 function zshupdate(){
-	local curdir=$(pwd)
-	cd ~/.zsh/plugins
-	(ls -d */ | while read DIR; do cd $DIR && git pull; done) || true
-	cd $curdir
+	(for DIR in "$HOME/.zsh/plugins/"*/; do
+		cd "$DIR" &&
+		git pull
+	done)
 }
 
 function ts-init() {
