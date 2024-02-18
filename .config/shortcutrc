@@ -2,8 +2,6 @@ alias la="ls -la --color=auto"
 alias zshrc="$EDITOR ~/.zshrc"
 alias shortcutrc="$EDITOR ~/.config/shortcutrc"
 alias aliasrc="$EDITOR ~/.config/aliasrc"
-alias pavucontrol-opi="env PULSE_SERVER="192.168.1.4" pavucontrol-qt"
-
 
 if [ "$(uname)" = "Linux" ]; then 
 	# B o h

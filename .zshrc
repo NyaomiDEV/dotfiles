@@ -659,27 +659,35 @@ function __plugin_exists(){
 }
 
 # Abbreviations
-__plugin_loader zsh-abbr/zsh-abbr.plugin.zsh
+__plugin_loader zsh-abbr/zsh-abbr.plugin.zsh ||
+	echo "Missing zsh-abbr plugin!"
 
 # Autosuggestions
-__plugin_loader zsh-autosuggestions/zsh-autosuggestions.zsh
+__plugin_loader zsh-autosuggestions/zsh-autosuggestions.zsh ||
+	echo "Missing zsh-autosuggestions plugin!"
 
 # Fzf
 if where fzf >/dev/null; then
-	__plugin_loader fzf-tab/fzf-tab.plugin.zsh 2>/dev/null || true
+	__plugin_loader fzf-tab-bin-git/fzf-tab.plugin.zsh ||
+		__plugin_loader fzf-tab-git/fzf-tab.plugin.zsh ||
+		__plugin_loader fzf-tab/fzf-tab.plugin.zsh ||
+		echo "Missing fzf-tab plugin!"
 fi
 
 # Syntax highlighting
 __plugin_loader fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ||
 	__plugin_loader zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ||
-	__plugin_loader zsh-syntax-highlighting/zsh-syntax-highlighting.zsh || true
+	__plugin_loader zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ||
+	echo "Missing syntax highlighting plugin!"
 
 # Su by pressing double ESC
-__plugin_loader su-zsh-plugin/su.plugin.zsh || true
+__plugin_loader su-zsh-plugin/su.plugin.zsh ||
+	echo "Missing su-zsh plugin!"
 
 # History substring search (useless if Atuin is there)
 if ! where atuin &> /dev/null; then
-	__plugin_loader zsh-history-substring-search/zsh-history-substring-search.zsh
+	__plugin_loader zsh-history-substring-search/zsh-history-substring-search.zsh ||
+		echo "Missing zsh-history-substring-search plugin!"
 fi
 
 #
