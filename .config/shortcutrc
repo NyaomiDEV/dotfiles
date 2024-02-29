@@ -23,6 +23,22 @@ function dotpull() {
 	)
 }
 
+function mvtodot() {
+	(
+		dotdir="$(dirname "$(realpath "$HOME/.zshrc")")"
+		thingdir="$(realpath "$1")"
+		reltohome="${thingdir#"$HOME"/}"
+		
+		if [ "$thingdir" = "$reltohome" ]; then
+			exit 1
+		fi
+
+		mkdir -p "$(dirname "$dotdir/$reltohome")"
+		mv "$thingdir" "$dotdir/$reltohome"
+		ln -s "$dotdir/$reltohome" "$thingdir"
+	)
+}
+
 function zshupdate(){
 	(for DIR in "$HOME/.zsh/plugins/"*/; do
 		cd "$DIR" &&
