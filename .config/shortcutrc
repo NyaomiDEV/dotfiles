@@ -82,3 +82,8 @@ function transfer() {
 		curl --progress-bar --upload-file "-" "https://transfer.sh/$file_name" | tee /dev/null;
 	fi;
 }
+
+function screencast_reload() {
+	qdbus org.kde.KWin /Plugins org.kde.KWin.Plugins.UnloadPlugin screencast
+	qdbus org.kde.KWin /Plugins org.kde.KWin.Plugins.LoadPlugin screencast
+}
