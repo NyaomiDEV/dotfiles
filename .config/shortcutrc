@@ -2,10 +2,11 @@ alias la="ls -la --color=auto"
 alias zshrc="$EDITOR ~/.zshrc"
 alias shortcutrc="$EDITOR ~/.config/shortcutrc"
 alias aliasrc="$EDITOR ~/.config/aliasrc"
-alias syncmusic="rsync -avzP --delete -e ssh /music/ naomi@192.168.1.100:/music/"
 
 if [ "$(uname)" = "Linux" ]; then 
-	# B o h
+	if [ "$HOST" = "naomi-pc" ]; then
+		alias syncmusic="rsync -avzP --delete -e ssh /music/ naomi@192.168.1.100:/music/"
+	fi
 fi
 
 function dotupdate() {
