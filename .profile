@@ -18,6 +18,7 @@ fi
 _platform=$(uname)
 case $_platform in
 	Linux)
+		# export QT_SCALE_FACTOR_ROUNDING_POLICY=RoundPreferFloor
 		;;
 	Darwin)
 		export PATH="/opt/local/bin:/opt/local/sbin:/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.1.0/bin:$PATH"
