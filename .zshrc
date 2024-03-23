@@ -8,11 +8,13 @@
 [ -d "$HOME/.cache/zsh" ] || mkdir -p "$HOME/.cache/zsh"
 
 # Brew
-if which arch >/dev/null; then
-	if [ "$(arch)" = "arm64" ] && [ -d "/opt/homebrew" ]; then
-		eval "$(/opt/homebrew/bin/brew shellenv)"
-	else
-		eval "$(/usr/local/bin/brew shellenv)"
+if [ "$(uname)" = "Darwin" ]; then
+	if which arch &>/dev/null; then
+		if [ "$(arch)" = "arm64" ] && [ -d "/opt/homebrew" ]; then
+			eval "$(/opt/homebrew/bin/brew shellenv)"
+		else
+			eval "$(/usr/local/bin/brew shellenv)"
+		fi
 	fi
 fi
 
@@ -28,13 +30,13 @@ if [ "$(uname)" = "Linux" ]; then
 	alias fgrep='fgrep --colour=auto'
 fi
 
-which eza >/dev/null && alias ls="eza --color=auto --group --classify --icons --git --group-directories-first --header"
+which eza &>/dev/null && alias ls="eza --color=auto --group --classify --icons --git --group-directories-first --header"
 
 # If bat is present, alias cat to use bat -pp
-which bat >/dev/null && alias cat="bat -pp" || true
+which bat &>/dev/null && alias cat="bat -pp" || true
 
 # On Arch Linux, helix is called 'helix' and not 'hx'. Provide an alias to that
-which helix >/dev/null && alias hx=helix || true
+which helix &>/dev/null && alias hx=helix || true
 
 # Load aliases and shortcuts if existent
 [ -f "$HOME/.config/shortcutrc" ] && source "$HOME/.config/shortcutrc"
@@ -68,7 +70,7 @@ zmodload zsh/zpty
 colors
 
 # Calculate and import dircolors
-if which dircolors >/dev/null; then
+if which dircolors &>/dev/null; then
 	if [[ -f ~/.dir_colors ]]; then
 		eval $(dircolors -b ~/.dir_colors)
 	elif [[ -f /etc/DIR_COLORS ]]; then
@@ -194,7 +196,11 @@ setopt promptsubst
 
 # Autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#808080"
-ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd atuin history completion)
+if which atuin &> /dev/null; then
+	ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd atuin history completion)
+else
+	ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd history completion)
+fi
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 
 # Completion
@@ -532,8 +538,8 @@ function redraw-prompt () {
 }
 
 # Source: https://github.com/phiresky/ripgrep-all
-if which rga >/dev/null; then
-	if which fzf >/dev/null; then
+if which rga &> /dev/null; then
+	if which fzf &> /dev/null; then
 		function rga-fzf() {
 			RG_PREFIX="rga --files-with-matches"
 			local file
@@ -626,7 +632,7 @@ add-zsh-hook chpwd load-nvmrc
 #
 
 # Fzf
-if which fzf >/dev/null; then
+if which fzf &>/dev/null; then
 	fzf_location=$(realpath "$(whence fzf)")
 	fzf_location=${${fzf_location%/*}%/*}
 	if [ -d "$fzf_location/shell" ]; then # We are inside a brew package
@@ -678,7 +684,7 @@ __plugin_loader zsh-autosuggestions/zsh-autosuggestions.zsh ||
 	([ -n "$DEBUG_ZSHRC" ] && echo "Missing zsh-autosuggestions plugin!")
 
 # Fzf
-if which fzf >/dev/null; then
+if which fzf &>/dev/null; then
 	__plugin_loader fzf-tab-bin-git/fzf-tab.plugin.zsh ||
 		__plugin_loader fzf-tab-git/fzf-tab.plugin.zsh ||
 		__plugin_loader fzf-tab/fzf-tab.plugin.zsh ||
@@ -819,17 +825,17 @@ atuin-setup
 
 # Determine SU command
 if __plugin_exists su-zsh-plugin/su.plugin.zsh; then
-	SU_COMMAND=$((which doas >/dev/null && echo doas) || (which sudo >/dev/null && echo sudo))
+	SU_COMMAND=$((which doas &>/dev/null && echo doas) || (which sudo &>/dev/null && echo sudo))
 fi
 
 # Initialize completion
 compinit -d "$HOME/.cache/zsh/compdump"
 
 # Use cod (completion daemon) if it is available in the system
-which cod >/dev/null && source <(cod init $$ zsh) || true
+which cod &>/dev/null && source <(cod init $$ zsh) || true
 
 # Zoxide (with completions)
-if which zoxide >/dev/null; then
+if which zoxide &>/dev/null; then
 	eval "$(zoxide init zsh --cmd cd)"
 else
 	[ -n "$DEBUG_ZSHRC" ] && echo "Zoxide is not installed. Using regular cd builtin."
