@@ -696,7 +696,7 @@ fi
 
 # Syntax highlighting
 __plugin_loader fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ||
-	__plugin_loader zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ||
+	__plugin_loader zsh-fast-syntax-highlighting/F-Sy-H.plugin.zsh ||
 	__plugin_loader zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ||
 	([ -n "$DEBUG_ZSHRC" ] && echo "Missing syntax highlighting plugin!")
 
