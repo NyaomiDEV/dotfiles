@@ -229,8 +229,11 @@ NERD_FONTS=1
 # Source: Andy Kluger (@andykluger) from telegram group @zshell
 # Readapted to my use case
 local segments=()
+local hostname="${HOST#"$USER"}"
 
-segments+='%F{yellow}%n '					# user name
+segments+='%F{yellow}%n'					# user name
+[ "$HOST" = "$hostname" ] && segments+=' '			# hostname spacer
+segments+='%F{blue}$hostname '					# hostname
 segments+='%F{green}%~'						# folder
 segments+='$(git-status)'					# git info
 segments+='$(nvm-version)'					# nvm version
