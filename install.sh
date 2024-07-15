@@ -11,7 +11,7 @@ fi
 
 echo "Naomi's Dotfiles!"
 
-packages="git zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-fast-syntax-highlighting eza fzf rga bat atuin ttf-nerd-fonts-symbols"
+packages="git zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-fast-syntax-highlighting eza fzf ripgrep-all bat atuin ttf-nerd-fonts-symbols"
 optional_packages="cod"
 
 git_packages="fzf-tab su-zsh-plugin"
