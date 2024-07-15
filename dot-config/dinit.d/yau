@@ -1,4 +1,0 @@
-type = process
-command = /home/naomi/.yarn/bin/yau
-restart = true
-smooth-recovery = true
