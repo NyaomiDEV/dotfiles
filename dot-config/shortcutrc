@@ -30,14 +30,20 @@ function mvtodot() {
 		dotdir="$(dirname "$(realpath "$HOME/.zshrc")")"
 		thingdir="$(realpath "$1")"
 		reltohome="${thingdir#"$HOME"/}"
+		destination="${dotdir}/${reltohome}"
+
+		case "$reltohome" in
+			"."*) destination="${dotdir}/dot-${reltohome:1}";;
+			*) ;;
+		esac
 		
 		if [ "$thingdir" = "$reltohome" ]; then
 			exit 1
 		fi
 
-		mkdir -p "$(dirname "$dotdir/$reltohome")"
-		mv "$thingdir" "$dotdir/$reltohome"
-		ln -s "$dotdir/$reltohome" "$thingdir"
+		mkdir -p "$(dirname "$destination")"
+		mv "$thingdir" "$destination"
+		ln -s "$destination" "$thingdir"
 	)
 }
 
