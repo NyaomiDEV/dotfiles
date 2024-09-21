@@ -6,8 +6,8 @@ if which yarn >/dev/null; then
 	export PATH="$(yarn global bin):$PATH"
 fi
 
-if [ -f "$HOME/.cargo/env" ]; then
-	source $HOME/.cargo/env
+if [ -d "$HOME/.cargo/bin" ]; then
+	export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
 if [ -d "$HOME/.deno" ]; then
@@ -18,7 +18,7 @@ fi
 _platform=$(uname)
 case $_platform in
 	Linux)
-		# export QT_SCALE_FACTOR_ROUNDING_POLICY=RoundPreferFloor
+		export QT_SCALE_FACTOR_ROUNDING_POLICY=RoundPreferFloor
 		;;
 	Darwin)
 		export PATH="/opt/local/bin:/opt/local/sbin:/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.1.0/bin:$PATH"
@@ -27,3 +27,7 @@ case $_platform in
 esac
 
 export EDITOR=nano
+
+if [ -n "$ANDROID_NDK_HOME" ]; then
+	export NDK_HOME="$ANDROID_NDK_HOME"
+fi
