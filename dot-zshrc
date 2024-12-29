@@ -28,8 +28,10 @@ if [ "$(uname)" = "Linux" ]; then
 	alias grep='grep --colour=auto'
 	alias egrep='egrep --colour=auto'
 	alias fgrep='fgrep --colour=auto'
+	alias ip='ip --color=auto'
 fi
 
+command -v cyme &>/dev/null && alias lsusb='cyme --lsusb'
 command -v eza &>/dev/null && alias ls="eza --color=auto --group --classify --icons --git --group-directories-first --header"
 
 # If bat is present, alias cat to use bat -pp
