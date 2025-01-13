@@ -1,25 +1,30 @@
 [General]
 hotkey=Alt+Space
+memoryDecay=0.65
 showTray=false
 telemetry=false
 
 [applications]
 enabled=true
-fuzzy=false
+fuzzy=true
 terminal=org.kde.konsole
 
 [calculator_qalculate]
 angle_unit=2
 enabled=true
+global_handler_enabled=false
 
 [clipboard]
 enabled=true
 
 [datetime]
 enabled=true
+global_handler_enabled=false
 
 [files]
 enabled=true
+fuzzy=true
+global_handler_enabled=false
 home\naomi\followSymlinks=false
 home\naomi\indexhidden=false
 home\naomi\maxDepth=255
@@ -31,12 +36,18 @@ paths=/home/naomi
 
 [hash]
 enabled=true
+global_handler_enabled=false
 
 [mpris]
 enabled=true
+global_handler_enabled=false
 
 [path]
 enabled=true
+
+[pluginregistry]
+fuzzy=true
+global_handler_enabled=false
 
 [python]
 enabled=true
@@ -52,6 +63,7 @@ enabled=true
 
 [python.color]
 enabled=true
+global_handler_enabled=false
 
 [python.dice_roll]
 enabled=true
@@ -61,6 +73,9 @@ enabled=true
 
 [python.emoji]
 enabled=true
+fuzzy=true
+global_handler_enabled=false
+trigger="emoji "
 use_derived=true
 
 [python.kill]
@@ -74,21 +89,26 @@ enabled=true
 
 [python.syncthing]
 enabled=true
+global_handler_enabled=false
 
 [python.translators]
 enabled=false
 
 [python.unit_converter]
 enabled=true
+global_handler_enabled=false
 
 [python.vpn]
 enabled=true
 
 [python.wikipedia]
 enabled=true
+fuzzy=false
 
 [snippets]
 enabled=true
+fuzzy=true
+global_handler_enabled=false
 
 [system]
 command_logout=qdbus6 org.kde.Shutdown /Shutdown  org.kde.Shutdown.logout
@@ -96,20 +116,28 @@ command_poweroff=qdbus6 org.kde.Shutdown /Shutdown  org.kde.Shutdown.logoutAndSh
 command_reboot=qdbus6 org.kde.Shutdown /Shutdown  org.kde.Shutdown.logoutAndReboot
 command_suspend=loginctl suspend -i
 enabled=true
+fuzzy=false
+global_handler_enabled=false
 hibernate_enabled=false
 logout_enabled=true
 poweroff_enabled=true
 reboot_enabled=true
 suspend_enabled=true
+trigger="sys "
 
 [timezones]
 enabled=true
 
+[triggers]
+global_handler_enabled=false
+
 [urlhandler]
 enabled=true
+global_handler_enabled=false
 
 [websearch]
 enabled=true
+global_handler_enabled=false
 
 [widgetsboxmodel]
 alwaysOnTop=true
