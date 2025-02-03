@@ -852,3 +852,4 @@ load-nvmrc
 
 # iTerm2 shell extensions
 [ -e "${HOME}/.iterm2_shell_integration.zsh" ] && source "${HOME}/.iterm2_shell_integration.zsh" || true
+
