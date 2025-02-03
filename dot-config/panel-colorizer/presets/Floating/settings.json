@@ -1099,6 +1099,20 @@
                     "id": 139,
                     "name": "org.kde.plasma.icontasks",
                     "presets": []
+                },
+                {
+                    "id": 122,
+                    "name": "org.kde.plasma.panelspacer",
+                    "presets": [
+                        "Panel spacer"
+                    ]
+                },
+                {
+                    "id": 123,
+                    "name": "org.kde.plasma.panelspacer",
+                    "presets": [
+                        "Panel spacer"
+                    ]
                 }
             ]
         },
