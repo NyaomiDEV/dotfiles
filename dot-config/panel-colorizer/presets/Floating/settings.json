@@ -213,7 +213,65 @@
             "unfiedBackground": {
                 "org.kde.plasma.digitalclock": 0
             },
-            "floatingDialogs": false
+            "floatingDialogs": false,
+            "borderSecondary": {
+                "enabled": false,
+                "customSides": false,
+                "custom": {
+                    "widths": {
+                        "left": 0,
+                        "bottom": 3,
+                        "right": 0,
+                        "top": 0
+                    },
+                    "margin": {
+                        "enabled": false,
+                        "side": {
+                            "right": 0,
+                            "left": 0,
+                            "top": 0,
+                            "bottom": 0
+                        }
+                    },
+                    "radius": {
+                        "enabled": false,
+                        "corner": {
+                            "topLeft": 5,
+                            "topRight": 5,
+                            "bottomRight": 5,
+                            "bottomLeft": 5
+                        }
+                    }
+                },
+                "width": 0,
+                "color": {
+                    "lightnessValue": 0.5,
+                    "saturationValue": 0.5,
+                    "alpha": 1,
+                    "systemColor": "highlightColor",
+                    "systemColorSet": "View",
+                    "custom": "#ff6c06",
+                    "list": {
+                        "0": "#ED8796",
+                        "1": "#A6DA95",
+                        "2": "#EED49F",
+                        "3": "#8AADF4",
+                        "4": "#F5BDE6",
+                        "5": "#8BD5CA",
+                        "6": "#f5a97f"
+                    },
+                    "followColor": 0,
+                    "saturationEnabled": false,
+                    "lightnessEnabled": false,
+                    "animation": {
+                        "enabled": false,
+                        "interval": 3000,
+                        "smoothing": 800
+                    },
+                    "sourceType": 1,
+                    "enabled": true
+                }
+            }
         },
         "widgets": {
             "enabled": true,
@@ -419,6 +477,64 @@
             },
             "unfiedBackground": {
                 "org.kde.plasma.digitalclock": 0
+            },
+            "borderSecondary": {
+                "enabled": false,
+                "customSides": false,
+                "custom": {
+                    "widths": {
+                        "left": 0,
+                        "bottom": 3,
+                        "right": 0,
+                        "top": 0
+                    },
+                    "margin": {
+                        "enabled": false,
+                        "side": {
+                            "right": 0,
+                            "left": 0,
+                            "top": 0,
+                            "bottom": 0
+                        }
+                    },
+                    "radius": {
+                        "enabled": false,
+                        "corner": {
+                            "topLeft": 5,
+                            "topRight": 5,
+                            "bottomRight": 5,
+                            "bottomLeft": 5
+                        }
+                    }
+                },
+                "width": 0,
+                "color": {
+                    "lightnessValue": 0.5,
+                    "saturationValue": 0.5,
+                    "alpha": 1,
+                    "systemColor": "highlightColor",
+                    "systemColorSet": "View",
+                    "custom": "#ff6c06",
+                    "list": {
+                        "0": "#ED8796",
+                        "1": "#A6DA95",
+                        "2": "#EED49F",
+                        "3": "#8AADF4",
+                        "4": "#F5BDE6",
+                        "5": "#8BD5CA",
+                        "6": "#f5a97f"
+                    },
+                    "followColor": 0,
+                    "saturationEnabled": false,
+                    "lightnessEnabled": false,
+                    "animation": {
+                        "enabled": false,
+                        "interval": 3000,
+                        "smoothing": 800
+                    },
+                    "sourceType": 1,
+                    "enabled": true
+                }
             }
         },
         "trayWidgets": {
@@ -624,6 +740,64 @@
             },
             "unfiedBackground": {
                 "org.kde.plasma.digitalclock": 0
+            },
+            "borderSecondary": {
+                "enabled": false,
+                "customSides": false,
+                "custom": {
+                    "widths": {
+                        "left": 0,
+                        "bottom": 3,
+                        "right": 0,
+                        "top": 0
+                    },
+                    "margin": {
+                        "enabled": false,
+                        "side": {
+                            "right": 0,
+                            "left": 0,
+                            "top": 0,
+                            "bottom": 0
+                        }
+                    },
+                    "radius": {
+                        "enabled": false,
+                        "corner": {
+                            "topLeft": 5,
+                            "topRight": 5,
+                            "bottomRight": 5,
+                            "bottomLeft": 5
+                        }
+                    }
+                },
+                "width": 0,
+                "color": {
+                    "lightnessValue": 0.5,
+                    "saturationValue": 0.5,
+                    "alpha": 1,
+                    "systemColor": "highlightColor",
+                    "systemColorSet": "View",
+                    "custom": "#ff6c06",
+                    "list": {
+                        "0": "#ED8796",
+                        "1": "#A6DA95",
+                        "2": "#EED49F",
+                        "3": "#8AADF4",
+                        "4": "#F5BDE6",
+                        "5": "#8BD5CA",
+                        "6": "#f5a97f"
+                    },
+                    "followColor": 0,
+                    "saturationEnabled": false,
+                    "lightnessEnabled": false,
+                    "animation": {
+                        "enabled": false,
+                        "interval": 3000,
+                        "smoothing": 800
+                    },
+                    "sourceType": 1,
+                    "enabled": true
+                }
             }
         },
         "nativePanelBackground": {
@@ -1109,6 +1283,20 @@
                 },
                 {
                     "id": 123,
+                    "name": "org.kde.plasma.panelspacer",
+                    "presets": [
+                        "Panel spacer"
+                    ]
+                },
+                {
+                    "id": 172,
+                    "name": "org.kde.plasma.panelspacer",
+                    "presets": [
+                        "Panel spacer"
+                    ]
+                },
+                {
+                    "id": 171,
                     "name": "org.kde.plasma.panelspacer",
                     "presets": [
                         "Panel spacer"
