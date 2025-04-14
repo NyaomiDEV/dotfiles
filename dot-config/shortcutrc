@@ -95,3 +95,20 @@ function screencast_reload() {
 	qdbus org.kde.KWin /Plugins org.kde.KWin.Plugins.UnloadPlugin screencast
 	qdbus org.kde.KWin /Plugins org.kde.KWin.Plugins.LoadPlugin screencast
 }
+
+function smapi() {
+	steamfolders=( $(cat /home/naomi/.local/share/Steam/steamapps/libraryfolders.vdf | grep "path" | tr -s $'\t' | cut -f 3 | tr -d '"') )
+
+	executable="$(find ${steamfolders[@]} -type f -name "StardewModdingAPI")"
+
+	if [ -z "$executable" ]; then
+		echo "Cannot find SMAPI anywhere inside your Steam games"
+		return
+	fi
+	
+	if [ -n "$1" ]; then
+		"$executable" --mods-folder "$1"
+	else
+		"$executable"
+	fi
+}
