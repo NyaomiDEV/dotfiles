@@ -112,3 +112,13 @@ function smapi() {
 		"${executables[1]}"
 	fi
 }
+
+function iwdedit() {
+	if [[ "$1" =~ "^[ [:alnum:]_-]*$" ]]; then
+		wifiname="$1"
+	else
+		wifiname="=$(echo -n "$1" | xxd -p)"
+	fi
+
+	sudo nano "/var/lib/iwd/${wifiname}.${2}"
+}
