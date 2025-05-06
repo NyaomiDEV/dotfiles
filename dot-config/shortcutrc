@@ -113,6 +113,19 @@ function smapi() {
 	fi
 }
 
+function smapi-mods(){
+	steamfolders=( ${(f)"$(cat "$HOME/.local/share/Steam/steamapps/libraryfolders.vdf" | grep "path" | tr -s $'\t' | cut -f 3 | tr -d '"')"} )
+
+	executables=( ${(f)"$(find ${steamfolders[@]} -type f -name "StardewModdingAPI")"} )
+
+	if [ ${#executables[@]} -eq 0 ]; then
+		echo "Cannot find SMAPI anywhere inside your Steam games"
+		return
+	fi
+	
+	xdg-open "$(dirname "${executables[1]}")/Mods"
+}
+
 function iwdedit() {
 	if [[ "$1" =~ "^[ [:alnum:]_-]*$" ]]; then
 		wifiname="$1"
