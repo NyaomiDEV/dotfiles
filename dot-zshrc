@@ -254,7 +254,7 @@ atuin-setup() {
 		return 1;
 	fi
 
-    eval "$(ATUIN_NOBIND="true" atuin init zsh)"
+	eval "$(ATUIN_NOBIND="true" atuin init zsh)"
 
 	# internal variables
 	typeset -g -i _atuin_history_match_index
